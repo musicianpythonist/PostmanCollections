@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "df7587b8-b8ec-45b3-9583-783f1d6a75df",
+		"name": "AcceptOrder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"var token = response.data.token\r",
+							"pm.collectionVariables.set(\"token\", token)\r",
+							"var orderPartIds = [49744844, 49716509, 49729982]\r",
+							"var parcelIds = [823351, 818234, 820763]\r",
+							"var orderIds = [50364491, 50336156, 50349629]\r",
+							"var fleetIds = [160, 305, 407]\r",
+							"var nationalCodes = [1050162005, 880232341, 4190857440]\r",
+							"var mobileNumbers = [9157115748, 9362707910, 9185122125]\r",
+							"var deliveryCodes = [0, 6112, 0]\r",
+							"pm.collectionVariables.set(\"orderPartIds\", orderPartIds)\r",
+							"pm.collectionVariables.set(\"parcelIds\", parcelIds)\r",
+							"pm.collectionVariables.set(\"orderIds\", orderIds)\r",
+							"pm.collectionVariables.set(\"fleetIds\", fleetIds)\r",
+							"pm.collectionVariables.set(\"nationalCodes\", nationalCodes)\r",
+							"pm.collectionVariables.set(\"mobileNumbers\", mobileNumbers)\r",
+							"pm.collectionVariables.set(\"deliveryCodes\", deliveryCodes)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"09123181638\",\r\n  \"password\": \"A123456@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CAAccount/Login",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CAAccount",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "acceptOrder",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var orderPartIds = pm.collectionVariables.get(\"orderPartIds\")\r",
+							"var parcelIds = pm.collectionVariables.get(\"parcelIds\")\r",
+							"var orderIds = pm.collectionVariables.get(\"orderIds\")\r",
+							"var fleetIds = pm.collectionVariables.get(\"fleetIds\")\r",
+							"var nationalCodes = pm.collectionVariables.get(\"nationalCodes\")\r",
+							"var mobileNumbers = pm.collectionVariables.get(\"mobileNumbers\")\r",
+							"var deliveryCodes = pm.collectionVariables.get(\"deliveryCodes\")\r",
+							"\r",
+							"\r",
+							"orderPartId = orderPartIds.shift()\r",
+							"parcelId = parcelIds.shift()\r",
+							"orderId = orderIds.shift()\r",
+							"fleetId = fleetIds.shift()\r",
+							"nationalCode = nationalCodes.shift()\r",
+							"mobileNumber = \"0\" + mobileNumbers.shift()\r",
+							"deliveryCode = deliveryCodes.shift()\r",
+							"\r",
+							"pm.collectionVariables.set(\"orderPartId\", orderPartId)\r",
+							"pm.collectionVariables.set(\"parcelId\", parcelId)\r",
+							"pm.collectionVariables.set(\"orderId\", orderId)\r",
+							"pm.collectionVariables.set(\"fleetId\", fleetId)\r",
+							"pm.collectionVariables.set(\"nationalCode\", nationalCode)\r",
+							"pm.collectionVariables.set(\"mobileNumber\", mobileNumber)\r",
+							"pm.collectionVariables.set(\"deliveryCode\", deliveryCode)\r",
+							"\r",
+							"pm.collectionVariables.set(\"orderPartIds\", orderPartIds)\r",
+							"pm.collectionVariables.set(\"parcelIds\", parcelIds)\r",
+							"pm.collectionVariables.set(\"orderIds\", orderIds)\r",
+							"pm.collectionVariables.set(\"fleetIds\", fleetIds)\r",
+							"pm.collectionVariables.set(\"nationalCodes\", nationalCodes)\r",
+							"pm.collectionVariables.set(\"mobileNumbers\", mobileNumbers)\r",
+							"pm.collectionVariables.set(\"deliveryCodes\", deliveryCodes)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var deliveryCode = pm.collectionVariables.get(\"deliveryCode\")\r",
+							"var deliveryCodes = pm.collectionVariables.get(\"deliveryCodes\")\r",
+							"if (deliveryCode == 0 && Object.keys(deliveryCodes).length > 0){\r",
+							"    postman.setNextRequest(\"acceptOrder\")\r",
+							"}\r",
+							"else if (deliveryCode == 0 && Object.keys(deliveryCodes).length == 0){\r",
+							"    postman.setNextRequest(null)\r",
+							"}\r",
+							"else{\r",
+							"    postman.setNextRequest(\"OrderDeliveryFinal\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"CustomerAgentId\": \"1\",\r\n\t\"NationalCode\":\"{{nationalCode}}\",\r\n\t\"MobileNumber\": \"{{mobileNumber}}\",\r\n\t\"OrderId\": \"{{orderId}}\",\r\n\t\"OrderPartId\": \"{{orderPartId}}\",\r\n\t\"UserId\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CustomerAgentOrder/acceptOrderV3",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CustomerAgentOrder",
+						"acceptOrderV3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrderDeliveryFinal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var orderPartIds = pm.collectionVariables.get(\"orderPartIds\")\r",
+							"if (Object.keys(orderPartIds).length > 0) {\r",
+							"\tpostman.setNextRequest(\"acceptOrder\")\r",
+							"}\r",
+							"else {\r",
+							"    postman.setNextRequest(null)\r",
+							"\tconsole.log(\"Done!\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"OrderId\": \"{{orderId}}\",\r\n    \"OrderPartId\": \"{{orderPartId}}\",\r\n    \"DeliveryCode\": \"{{deliveryCode}}\"\r\n}"
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CustomerAgentOrder/OrderDeliveryFinalHasti",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CustomerAgentOrder",
+						"OrderDeliveryFinalHasti"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "orderPartIds",
+			"value": ""
+		},
+		{
+			"key": "parcelIds",
+			"value": ""
+		},
+		{
+			"key": "orderIds",
+			"value": ""
+		},
+		{
+			"key": "fleetIds",
+			"value": ""
+		},
+		{
+			"key": "nationalCodes",
+			"value": ""
+		},
+		{
+			"key": "mobileNumbers",
+			"value": ""
+		},
+		{
+			"key": "deliveryCodes",
+			"value": ""
+		},
+		{
+			"key": "orderPartId",
+			"value": ""
+		},
+		{
+			"key": "parcelId",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "fleetId",
+			"value": ""
+		},
+		{
+			"key": "nationalCode",
+			"value": ""
+		},
+		{
+			"key": "mobileNumber",
+			"value": ""
+		},
+		{
+			"key": "deliveryCode",
+			"value": ""
+		}
+	]
+}

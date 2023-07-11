@@ -1,0 +1,1421 @@
+{
+	"info": {
+		"_postman_id": "e0a80085-8b30-4b43-bcee-d08a2bb0bee6",
+		"name": "0036ConfirmReturnByVendorAgent",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken);\r",
+							"var vendorRedirectCodes = []\r",
+							"var parcelReferenceCodes = []\r",
+							"var parcelReferenceCodesForSendDelivery = []\r",
+							"var parcelReferenceCodesForConfirmReturn = []\r",
+							"pm.collectionVariables.set(\"precision\", 1e2)\r",
+							"pm.collectionVariables.set(\"vendorRedirectCodes\", vendorRedirectCodes)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodes\", parcelReferenceCodes)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodesForSendDelivery\", parcelReferenceCodesForSendDelivery)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodesForConfirmReturn\", parcelReferenceCodesForConfirmReturn)\r",
+							"pm.collectionVariables.set(\"createRequestCount\", 2)\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{operationUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{operationPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerateVendorToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"body = JSON.parse(responseBody)\r",
+							"vendorToken = body.access_token\r",
+							"pm.environment.set(\"vendorToken\", vendorToken);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{vendorUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{vendorPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPolygonStoreId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var polygonStoresIds = [];\r",
+							"\r",
+							"for (i = 0; i < jsonData.length; i++){\r",
+							"    polygonStoresIds.push(jsonData[i].id);\r",
+							"}\r",
+							"pm.collectionVariables.set(\"polygonStoresIds\", polygonStoresIds);\r",
+							"console.log(\"polygonStoresIds : \" +  pm.collectionVariables.get(\"polygonStoresIds\"));\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.addQueryParams(\"polygonIds=\" + String(pm.globals.get(\"PolygonId\")));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetStoreListByToken",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetStoreListByToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStoreVendorId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"var storeList = jsonData.result;\r",
+							"var storeVendorCode = [];\r",
+							"var polygonStoresId = pm.collectionVariables.get(\"polygonStoresIds\");\r",
+							"\r",
+							"for (let i = 0; i < storeList.length; i++){\r",
+							"    for (let j = 0; j < polygonStoresId.length; j++){\r",
+							"        if (storeList[i].id == polygonStoresId[j]){\r",
+							"            storeVendorCode.push(parseInt(storeList[i].vendorCode));\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.collectionVariables.set(\"storeVendorCodes\", storeVendorCode);\r",
+							"console.log(\"storeVendorCodes :\" + storeVendorCode)\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Store/GetPagedModelListByFilter?PolygonId={{PolygonId}}&PageSize=100",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Store",
+						"GetPagedModelListByFilter"
+					],
+					"query": [
+						{
+							"key": "PolygonId",
+							"value": "{{PolygonId}}"
+						},
+						{
+							"key": "PageSize",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LocationGenerator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var latitude = 0,\r",
+							"    longitude = 0;\r",
+							"\r",
+							"for (i = 0; i < Object.keys(response.borderPoints).length; i++) {\r",
+							"    latitude += response.borderPoints[i].latitude;\r",
+							"    longitude += response.borderPoints[i].longitude;\r",
+							"}\r",
+							"\r",
+							"var precision = pm.collectionVariables.get(\"precision\")\r",
+							"console.log(precision)\r",
+							"\r",
+							"latitude = Math.random() / precision + latitude / Object.keys(response.borderPoints).length;\r",
+							"longitude = Math.random() / precision + longitude / Object.keys(response.borderPoints).length;\r",
+							"\r",
+							"pm.collectionVariables.set(\"onDemandRequestLatitude\", latitude);\r",
+							"pm.collectionVariables.set(\"onDemandRequestLongitude\", longitude);\r",
+							"console.log(\"client location : \" +  String(latitude) + \", \"  + String(longitude))\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetById/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetById",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI4ZjQ3MjMwMS02YWUzLTRlNWItODg3OC1iNDkwOTM5ZGFlYjIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NTMxOTAyMSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjUzMTU0MjF9.Ov0MgfMEgbcHNYTtExap3PbkdE61C2Kdd8EUiAQ-gCnDO7ys3Uqlz04cDQmTz9RqtW6xT_llkTKWnlalgsSzC7YxQSWky76q9HKgs2t0jwofQOQD_ewF2zOURVTV1ghEtYMO32BB_j0x8hGpKGlo1Wm8ShPWvhN5XYvTe3dzUERtyVX1x7RuyMMkepmv1jbaNh7vXBIfTIv_g-x4Ny2zgFFSq7YpJHLGzPSVvJVc0F3BTA4WmFXflYPe2DStP8Z74PNZ9LSGgdJBZsgSIKqQ35g51NUVdI6tGQWEWWiUTZ9UNB3D9Hyklk0yuZWE75FMEhq5O2TS2tAQabXONACRcQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetById",
+								"103"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "CreateOndemandRequest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var lat = Math.random() / 1000 + pm.collectionVariables.get(\"onDemandRequestLatitude\");\r",
+							"var long = Math.random() / 1000 + pm.collectionVariables.get(\"onDemandRequestLongitude\");\r",
+							"var items = []\r",
+							"var productCodesController = []\r",
+							"console.log(lat, long)\r",
+							"var storeVendorCodes = pm.collectionVariables.get(\"storeVendorCodes\");\r",
+							"var productTitles = [\"ماست کم چرب 2000 گرمی پگاه\", \"نوشابه پرتقالی 1500سی سی فانتا\", \"ماست همزده پرچرب 1.8 کیلوگرمی سبو هراز\", \"اسپری سوسک کش سوپر قوی 400 میلی لیتری تار و مار\", \"رشته سوپی ورمیشل 500 گرمی مانا\", \"جو پوست کنده بسته سلفونی 900 گرمی آذوقه\", \"سرکه قرمز 3000 گرمی کیمبال\", \"شکر 1 کیلویی گل پیرا\", \"مایع لباسشویی گلهای سفید 2700 گرمی پرسیل\", \"اسنک پنیری فنری 45 گرمی چاکلز\", \"اسنک چرخی ویژه 80 گرمی چی توز\", \"چی پلت سرکه ویژه  40 گرمی چی توز\", \"کیک لایه ای کاکائویی یس 50 گرمی آناتا \", \"استیک کچاپ ویژه 110 گرمی چی توز\", \"اسنک طلایی ویژه 50 گرمی چی توز\", \"اسنک میکس توپی حلقه ای 45گرمی چاکلز\", \"مایع لباسشویی با رایحه گلهای سفید 1100 گرمی پرسیل\", \"تخم مرغ شانه ای 30 عددی تنظیم بازار\", \"روغن گیاهی نیمه جامد امگا 4500 گرمی غنچه\", \"دوغ بدون گاز نعناع و پونه 1.5 لیتری کاله\", \"شکر 2700 گرم برلیان-الماس\", \"دستمال مرطوب دست و صورت 10 ع د\", \"دستکش یکبار مصرف سلفونی 100عددی پاندا\", \"کیک طلایی کاکائویی 70گرمی درنا\", \"ماست موسیر 250 گرمی رامک\", \"شیرکاکائو ESL بطری 200گرمی رامک\", \"نوشابه 1500 سی سی اسپرایت\", \"ران گوساله 1 کیلویی آوا\", \"کیک صبحانه مورنینگ 100 گرمی شیرین عسل\", \"کیک دوقلو بیربیر رویال درنا \", \"کیک روغنی دو رنگ 60 گرمی شیرین وطن\", \"نوشابه لیموناد شیشه 280 میلی لیتری زمزم\", \"بال و بازوی کبابی مکزیکی 500 گرمی پویا پروتیین\", \"کلوچه روکش شکلات نادیک 40 گرمی نادی\", \"نوشیدنی شکلات 200 میلی لیتر دنت\", \"پنیر یواف  آی ام ال 900  گرمی صباح\", \"خامه تتراپک200 گرمی صباح\", \"ماکارونی پیگولی 500 گرمی زر\", \"شامپو جنسینگ و کراتین حجم دهنده 400 میلی لیتری شون\", \"نرم کننده طلایی موی سر 800 میلی لیتری لطیفه \", \"دستمال توالت چهار لایه 12 رول  سافتلن\", \"بیسکویت با مغز شکلاتی رکورد 60 گرمی آناتا\", \"دستمال حوله ای سه لایه 2 رول سافتلن \", \"خیارشور ممتاز 680 گرمی مکنزی\", \"تخم مرغ زرده زعفرانی 6 عددی مهر آسا\", \"شکلات صبحانه فندقی 330 گرمی فرمند\", \"شامپو بدن کودک آبی 300 میلی لیتری فیروز\", \"خرمای مضافتی 650 گرمی مشکین\", \"گلاب ناب یک لیتری ربیع\", \"مربا هویج300 گرمی فامیلا\", \"مربا به 300 گرمی فامیلا\", \"نرم کننده حوله و لباس طلایی 1500 گرمی اکتیو\", \" پودر کاپوچینو با طعم کارامل20 عددی 400گرمی مادلین\", \"رب گوجه فرنگی 800 گرمی مکنزی\", \"خمیردندان الترا شاین  عصاره رزماری100 گرمی اکتیدنت\", \"قند شکسته بسته سلفونی 1700 گرمی صمیم\", \"قند شکسته بسته سلفونی 700 گرمی صمیم\", \"قند 700 گرمی البرز\", \"قند شکسته 1800 گرمی زرین البرز\", \"برنج خوشپخت 5 کیلوگرمی آذوقه\", \"سس هزار جزیره 440 گرمی بهروز\", \"سس کچاپ 660 گرمی بهروز\", \"سس مایونز تند چیلی 490 گرمی بیژن\", \"شامپو بچه دخترانه فروزن 200 میل نیوتیس\", \"شیر  نیم چرب 1 لیتری  رامک\", \"پوشک بچه سایز پنج 28 عددی مولفیکس\", \"ماکارونی پیکولی سبزیجات 500 گرمی  زر\", \"ماکارونی فرمی سدانو 500 گرمی زر\", \"آب آشامیدنی 1500 میلی لیتری دسانی \", \"دستمال مرطوب کودک 72 عددی وی\", \"دستمال توالت چهارلایه 2 رول سافتلن\", \"دستمال مرطوب کودک حاوی روغن پنبه دانه 20 برگی وی\", \"بیسکویت نان روغنی 50 گرمی سالمین\", \"ماکارونی فرمی سیم تلفنی 500 گرمی مانا\", \"ماکارونی فرمی اسپریلا 500 گرمی مانا\", \"ماکارونی فرمی پفکی 500 گرمی مانا\", \"بیسکوییت ساقه طلایی 200 گرمی مینو\", \"دستمال کاغذی دو لایه 150 برگ تنو \", \"کیسه فریزر شیت 100 عددی 35*25 پیکو پلاست\", \"سس کچاپ 550 گرمی بیژن\", \"ترشی فلفل سبز 570 گرمی بدر\", \"ویفر کاراملی رامینا 15 گرمی نادی\", \"ماکارونی فرمی زانوئی 500 گرمی مک\", \"شیر کم چرب ساده 950 سی سی میهن\", \" ماکارونی 700 گرمی  رشد\", \"چای هل  450گرمی شهرزاد\", \"چای هل 450 گرمی بلوط\", \"آدامس بیداری بدون شکر با طعم اکالیپتوس18 عددی اکشن\"]\r",
+							"var productCodes = [195266, 429, 195248, 9018, 23105, 149730, 17867, 185130, 189257, 2666, 8888, 8889, 10254, 13303, 13304, 186451, 189249, 15760, 177469, 560, 12526, 145405, 190823, 1115, 8276, 194672, 159, 8082, 13836, 25855, 150284, 190865, 190929, 195831, 2547, 11332, 147490, 408, 9522, 12455, 10276, 10257, 16218, 196022, 12547, 186478, 2060, 13325, 17058, 7885, 7887, 8871, 179228, 182396, 194458, 13116, 13117, 17006, 17048, 186383, 91, 2188, 11417, 190908, 11755, 189486, 449, 452, 2301, 13342, 174580, 188112, 2423, 15975, 15981, 15994, 219, 10342, 13010, 11868, 17791, 190884, 1956, 13489, 150322, 11244, 15628, 15716]\r",
+							"function itemGenerator() {\r",
+							"\tvar randomItemCount = Math.floor(Math.random() * 5) + 5\r",
+							"\tvar claimedValue = Math.floor(Math.random() * 100000) + 10000\r",
+							"\tvar index = Math.floor(Math.random() * productCodes.length)\r",
+							"\twhile (productCodesController.includes(index)) {\r",
+							"\t\tvar index = Math.floor(Math.random() * productCodes.length)\r",
+							"\t}\r",
+							"\tproductCodesController.push(index)\r",
+							"\tvar productCode = productCodes[index]\r",
+							"\tvar productTitle = productTitles[index]\r",
+							"\tvar vendorItemCode = Math.floor(Math.random() * 1000000) + 100000\r",
+							"\treturn {\r",
+							"\t\tproductCode: String(productCode),\r",
+							"\t\ttitle: String(productTitle),\r",
+							"\t\tcount: randomItemCount,\r",
+							"\t\tclaimedValue: claimedValue,\r",
+							"\t\tvendorItemCode: String(vendorItemCode)\r",
+							"\t}\r",
+							"\r",
+							"}\r",
+							"for (i = 0; i < Math.floor(Math.random() * 5) + 1; i++) {\r",
+							"\titems.push(itemGenerator())\r",
+							"}\r",
+							"var productCodesController = []\r",
+							"console.log(items)\r",
+							"pm.collectionVariables.set(\"items\", JSON.stringify(items))\r",
+							"\r",
+							"console.log(\"storeVendorCodes : \" + storeVendorCodes);\r",
+							"var storeVendorCode = storeVendorCodes.shift();\r",
+							"pm.collectionVariables.set(\"storeVendorCode\", storeVendorCode);\r",
+							"pm.collectionVariables.set(\"storeVendorCodes\", storeVendorCodes);\r",
+							"\r",
+							"console.log(\"selected storeVendorCode : \" + storeVendorCode);\r",
+							"console.log(\"createOndemandRequestCounter : \" + pm.collectionVariables.get(\"createRequestCount\"));\r",
+							"\r",
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"\t\tparcel: {\r",
+							"\t\t\tparcelPackageTypeId: 1,\r",
+							"\t\t\theight: 1,\r",
+							"\t\t\tlength: 2,\r",
+							"\t\t\twidth: 3,\r",
+							"\t\t\tweight: 4,\r",
+							"\t\t\tvendorParcelCode: String(Math.floor(Math.random() * 100000000) + 10000000),\r",
+							"\t\t\tdescription: \"اتوماسیون تست - مرجوعی فوری پس از تحویل\",\r",
+							"\t\t\tDeliveryCode: 1111,\r",
+							"\t\t\tinvoice: {\r",
+							"\t\t\t\tclaimedValue: Math.floor(Math.random() * 10) + 10000,\r",
+							"\t\t\t\tcodAmount: Math.floor(Math.random() * 1000) + 5000,\r",
+							"\t\t\t},\r",
+							"\t\t\titems: items\r",
+							"\t\t},\r",
+							"\t\treceiver: {\r",
+							"\t\t\tclientName: \"نام کاربری کلاینت\",\r",
+							"\t\t\tclientMobile: \"09345875236\",\r",
+							"\t\t\tclientLocation: {\r",
+							"\t\t\t\t\"latitude\": lat,\r",
+							"\t\t\t\t\"longitude\": long,\r",
+							"\t\t\t},\r",
+							"\t\t\tclientAddress: \"مقصد کلاینت‌های عرفان صمدی\"\r",
+							"\t\t},\r",
+							"\t\tredirectCode: String(Math.floor(1000000 + Math.random() * 9000000)),\r",
+							"\t\tstoreVendorCode: String(pm.collectionVariables.get(\"storeVendorCode\")),\r",
+							"\t\tVendorExtraData: {\r",
+							"\t\t\torderDateTime: String(new Date().toISOString()),\r",
+							"\t\t\tshippingStartTime: String(new Date().toLocaleDateString('fa-IR-u-nu-latn') + \" \" + (new Date(new Date().setMinutes(new Date().getMinutes() + (10)))).getHours() + \":\" + (new Date(new Date().setMinutes(new Date().getMinutes() + (10)))).getMinutes()),\r",
+							"\t\t\tshippingFinishTime: String(new Date().toLocaleDateString('fa-IR-u-nu-latn') + \" \" + (new Date(new Date().setMinutes(new Date().getMinutes() + (10)))).getHours() + \":\" + (new Date(new Date().setMinutes(new Date().getMinutes() + (10)))).getMinutes())\r",
+							"\t\t}\r",
+							"\t}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"var storeVendorCodes = pm.collectionVariables.get(\"storeVendorCodes\");\r",
+							"var vendorRedirectCodes = pm.collectionVariables.get(\"vendorRedirectCodes\")\r",
+							"var parcelReferenceCodes = pm.collectionVariables.get(\"parcelReferenceCodes\")\r",
+							"var parcelReferenceCodesForSendDelivery = pm.collectionVariables.get(\"parcelReferenceCodesForSendDelivery\")\r",
+							"var parcelReferenceCodesForConfirmReturn = pm.collectionVariables.get(\"parcelReferenceCodesForConfirmReturn\")\r",
+							"console.log(\"parcelReferenceCode : \" + parseInt(response.deliveryParcel.parcelReferenceCode, 16))\r",
+							"parcelReferenceCodes.push(parseInt(response.deliveryParcel.parcelReferenceCode, 16))\r",
+							"parcelReferenceCodesForSendDelivery.push(parseInt(response.deliveryParcel.parcelReferenceCode, 16))\r",
+							"parcelReferenceCodesForConfirmReturn.push(parseInt(response.deliveryParcel.parcelReferenceCode, 16))\r",
+							"vendorRedirectCodes.push(response.redirectCode)\r",
+							"pm.collectionVariables.set(\"vendorRedirectCodes\", vendorRedirectCodes)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodes\", parcelReferenceCodes)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodesForSendDelivery\", parcelReferenceCodesForSendDelivery)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodesForConfirmReturn\", parcelReferenceCodesForConfirmReturn)\r",
+							"pm.collectionVariables.set(response.redirectCode, pm.collectionVariables.get(\"items\"))\r",
+							"pm.collectionVariables.unset(\"items\")\r",
+							"\r",
+							"pm.collectionVariables.set(\"createRequestCount\", pm.collectionVariables.get(\"createRequestCount\") - 1);\r",
+							"\r",
+							"if (storeVendorCodes && Object.keys(storeVendorCodes).length > 0 && pm.collectionVariables.get(\"createRequestCount\") > 0) {\r",
+							"    postman.setNextRequest(\"CreateOndemandRequest\");\r",
+							"} else {\r",
+							"\r",
+							"    if (pm.collectionVariables.get(\"createRequestCount\") > 0) {\r",
+							"        postman.setNextRequest(\"GetPolygonStoreId\");\r",
+							"    }\r",
+							"    else {\r",
+							"        postman.setNextRequest(\"GetUnassignedListByPolygon\");\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{vendorToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{om}}/api/v1/VendorAgent/CreateOnDemandCourierRequest",
+					"host": [
+						"{{om}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"CreateOnDemandCourierRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUnassignedListByPolygon",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var dispatchRequestIds = []\r",
+							"var storeIds = []\r",
+							"var dispatchPerStore = []\r",
+							"var tempDispatchRequestList = []\r",
+							"var parcelReferenceCodes = pm.collectionVariables.get(\"parcelReferenceCodes\")\r",
+							"console.log(\"parcelReferenceCodes : \" + parcelReferenceCodes)\r",
+							"\r",
+							"if (response != null) {\r",
+							"\t_.each(response.dispatchRequests, dp => {\r",
+							"\t\tstoreIds.push(dp.storeId)\r",
+							"\t})\r",
+							"}\r",
+							"storeIds = [...new Set(storeIds)]\r",
+							"pm.collectionVariables.set(\"storeIds\", storeIds)\r",
+							"console.log(\"storeIds : \" + storeIds)\r",
+							"\r",
+							"_.each(storeIds, si => {\r",
+							"\t_.each(response.dispatchRequests, dp => {\r",
+							"\t\tif (dp.storeId == si && dp.courierRequestTypeId == 5 && parcelReferenceCodes.includes(dp.parcelReferenceCode)) {\r",
+							"\t\t\ttempDispatchRequestList.push(dp.id)\r",
+							"\t\t\tconsole.log(\"find dispatchRequest in storeId : \" + si)\r",
+							"\t\t}\r",
+							"\t})\r",
+							"\tif (tempDispatchRequestList.length != 0) {\r",
+							"\t\tpm.collectionVariables.set(String(si), tempDispatchRequestList)\r",
+							"\t\ttempDispatchRequestList = []\r",
+							"\t}\r",
+							"\telse{\r",
+							"\t\tconsole.log(\"cannot find any dispatchRequest in storeId : \" + si)\r",
+							"\t}\r",
+							"})\r",
+							"\r",
+							"console.log(pm.collectionVariables.toObject())\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/GetUnassignedListByFilter?PolygonIds={{PolygonId}}&PageSize=1000",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"GetUnassignedListByFilter"
+					],
+					"query": [
+						{
+							"key": "PolygonIds",
+							"value": "{{PolygonId}}"
+						},
+						{
+							"key": "PageSize",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/DispatchRequest/GetUnassignedListByFilter?ProvinceId=26&CityId=966&StartDeliveryTime=20220924000000000&EndDeliveryTime=20220924235959999&PolygonIds=115",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IldLT09aVjRLS1M2TVlFVUZLMzU2RU1WUDNUME01SlNOS1M4WlJNUkwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsIm9pX2F1X2lkIjoiMzEyNzQ1MTAtMjBlNi00M2U1LWFlZWUtZTc4ZDgxY2Q2OTQzIiwiY2xpZW50X2lkIjoiYW5ndWxhciIsIm9pX3Rrbl9pZCI6Ijg4Yzc1OTM1LTI4ZDYtNDA0Yi1hYjljLTEyYWZkMDQ2MWI3YiIsImF1ZCI6Imhhc3RpX3NlcnZlciIsInNjb3BlIjoiaGFzdGlfYXBpIG9mZmxpbmVfYWNjZXNzIHByb2ZpbGUiLCJleHAiOjE2NjQwMDAwNTQsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwiaWF0IjoxNjYzOTk2NDU0fQ.UbNtio7da7IO0A0EdscoXqzZX7clkKD93M-O9kUb4ErJ5ka6kpFR52hedO6J6ioKr1raRQG6X81B3gmhVd65ovYwZP_riMHZlo0XXsK3wEd01RJ-HD-6HuHeziZWVPchC9lkA92tRtEayTjrzupJzcqgKzVhyOCkJJxtuoq5L1V9Ye8gkcN-HLddq09bdS84vtNGHjPFLugH_RPTu39ZP0MS9RfJvNIbIyUgIEqNJAemytfLPUzvVDal2hu-bXAr7SkzrDYA-JVXTCbkLLRcyPvXqUtVXcSNsASDjAf9RKI732eAQVRGiLZ42CQqY1jcpDlatu2GVM3lIYt3sYW0Wg"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/DispatchRequest/GetUnassignedListByFilter?ProvinceId=26&CityId=966&StartDeliveryTime=20220924000000000&EndDeliveryTime=20220924235959999&PolygonIds=115",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"DispatchRequest",
+								"GetUnassignedListByFilter"
+							],
+							"query": [
+								{
+									"key": "ProvinceId",
+									"value": "26"
+								},
+								{
+									"key": "CityId",
+									"value": "966"
+								},
+								{
+									"key": "StartDeliveryTime",
+									"value": "20220924000000000"
+								},
+								{
+									"key": "EndDeliveryTime",
+									"value": "20220924235959999"
+								},
+								{
+									"key": "PolygonIds",
+									"value": "115"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "GetOnlineFleetList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var onlineFleetsForAssignByOperationMethod = [];\r",
+							"for (i = 0; i < Object.keys(response).length; i++) {\r",
+							"    onlineFleetsForAssignByOperationMethod.push(response[i].fleetId);\r",
+							"}\r",
+							"pm.collectionVariables.set(\"onlineFleetsForAssignByOperationMethod\", onlineFleetsForAssignByOperationMethod);\r",
+							"console.log(\"Online FleetIds : \" + pm.collectionVariables.get(\"onlineFleetsForAssignByOperationMethod\"));\r",
+							"\r",
+							"\r",
+							"\r",
+							"console.log(pm.collectionVariables.toObject())\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "host",
+						"value": "dp.pctalent.ir",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetOnlineFleetList/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetOnlineFleetList",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetOnlineFleetList/52",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwib2lfYXVfaWQiOiJkM2ZhZjE4Ni1kMjZmLTRjZTktYmI1My1lZGZjZWNjZTY3MWMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiMjc2ZTVmYmItNjc3OC00MjMzLWFjYzAtNDBiNDI5NWI2MjExIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb2ZmbGluZV9hY2Nlc3MgcHJvZmlsZSIsImV4cCI6MTY2NTMyNTExNSwiaWF0IjoxNjY1MzIxNTE1fQ.P10ZXAZd0fhHq_cgRHkw7yfp3RmkumqJcSfr7qOyobD2_0y4kizwnyAV42_vYG36rIGnfWpe-HhwaLHjJoICn8zQIzV0OBpDoOYTI8gfDMeBA1Ei36A28pPAzpTn8_dd68_VQim0CGDdEZir8_TLJhQmJtSiZycIDqEJZVTbXYLXIIvPpXb3Hq2kJHE2A6gHyT4ySW-rkNG63XRIPm-bE_zWoPGlklehp41fg7Y8kjAG4PvpDFGs1_yKIq7GWJiYKbVx37TS5zxZshq60IzT8NtzDBSU3rlbU0yROG0rlWSeTA_kIogKcz3-bkjZzDPBG2gJuwxSYE4pyOTqGpwr-Q"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetOnlineFleetList/52",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetOnlineFleetList",
+								"52"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "AssignByOperation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var dispatchRequests = []\r",
+							"var fleetIds = pm.collectionVariables.get(\"onlineFleetsForAssignByOperationMethod\");\r",
+							"var fleetId = fleetIds.shift()\r",
+							"pm.collectionVariables.set(\"onlineFleetsForAssignByOperationMethod\", fleetIds)\r",
+							"var storeIds = pm.collectionVariables.get(\"storeIds\");\r",
+							"var storeId = storeIds.shift()\r",
+							"pm.collectionVariables.set(\"storeIds\", storeIds)\r",
+							"dispatchRequests = pm.collectionVariables.get(String(storeId))\r",
+							"\r",
+							"console.log(\"selected storeId : \" + storeId)\r",
+							"console.log(\"dispatchRequests : \" + dispatchRequests)\r",
+							"\r",
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"\t\t\"fleetId\": fleetId,\r",
+							"\t\t\"dispatchRequestId\": dispatchRequests\r",
+							"\t}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var storeIds = pm.collectionVariables.get(\"storeIds\")\r",
+							"console.log(storeIds)\r",
+							"console.log(Object.keys(storeIds).length)\r",
+							"if (Object.keys(storeIds).length != 0){\r",
+							"\tpostman.setNextRequest(\"AssignByOperation\")\r",
+							"}\r",
+							"else{\r",
+							"\tpostman.setNextRequest(\"SendPickupByOperationStaff\")\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"console.log(pm.collectionVariables.toObject())\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/AssignByOperation",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"AssignByOperation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/DispatchRequest/AssignByOperation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwib2lfYXVfaWQiOiJkM2ZhZjE4Ni1kMjZmLTRjZTktYmI1My1lZGZjZWNjZTY3MWMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiMjc2ZTVmYmItNjc3OC00MjMzLWFjYzAtNDBiNDI5NWI2MjExIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb2ZmbGluZV9hY2Nlc3MgcHJvZmlsZSIsImV4cCI6MTY2NTMyNTExNSwiaWF0IjoxNjY1MzIxNTE1fQ.P10ZXAZd0fhHq_cgRHkw7yfp3RmkumqJcSfr7qOyobD2_0y4kizwnyAV42_vYG36rIGnfWpe-HhwaLHjJoICn8zQIzV0OBpDoOYTI8gfDMeBA1Ei36A28pPAzpTn8_dd68_VQim0CGDdEZir8_TLJhQmJtSiZycIDqEJZVTbXYLXIIvPpXb3Hq2kJHE2A6gHyT4ySW-rkNG63XRIPm-bE_zWoPGlklehp41fg7Y8kjAG4PvpDFGs1_yKIq7GWJiYKbVx37TS5zxZshq60IzT8NtzDBSU3rlbU0yROG0rlWSeTA_kIogKcz3-bkjZzDPBG2gJuwxSYE4pyOTqGpwr-Q"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fleetId\":1347,\"dispatchRequestId\":[28758]}"
+						},
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/DispatchRequest/AssignByOperation",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"DispatchRequest",
+								"AssignByOperation"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "SendPickupByOperationStaff",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var parcelReferenceCodes = pm.collectionVariables.get(\"parcelReferenceCodes\");\r",
+							"console.log(\"parcelReferenceCodesList : \" + parcelReferenceCodes);\r",
+							"var parcelReferenceCode = parcelReferenceCodes.shift();\r",
+							"console.log(\"Picked up parcelReferenceCode : \" + String(parcelReferenceCode))\r",
+							"pm.collectionVariables.set(\"parcelReferenceCode\", parcelReferenceCode);\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodes\", parcelReferenceCodes);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var parcelReferenceCodes = pm.collectionVariables.get(\"parcelReferenceCodes\");\r",
+							"\r",
+							"if (parcelReferenceCodes && parcelReferenceCodes.length > 0) {\r",
+							"    postman.setNextRequest(\"SendPickupByOperationStaff\");\r",
+							"} else {\r",
+							"    postman.setNextRequest(\"SubmitUnsuccessfulDeliveryByOperationStaff\");\r",
+							"}\r",
+							"\r",
+							"console.log(pm.collectionVariables.toObject())\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"parcelReferenceCode\": {{parcelReferenceCode}}\r\n}"
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/SendPickupByOperationStaff",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"SendPickupByOperationStaff"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://om.pctalent.ir/api/v1/Parcel/SendPickupByOperationStaff",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "host",
+								"value": "om.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlZXRFE4VkYwWlpKMlRGTlc2Sk4ySUVLUkJDSy1BS1VBSUhIQl81VEciLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJmMDhiY2IxOC0wNWVjLTQwOGEtODcyZi1hODczMmIyYjM5NTAiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY3MDM5NzY3OSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NzAzOTQwNzl9.oTxY9mv1LWHaUEwCdZWPQNHui4BlVq3a-LoVMrkOG9oGaSIKoJO7lD0e9k0tV-n9QL6WsXjJZq6_FzBkv0BNw_CojBBYRw6E0pf8ygt-JxdgSjc0PRppGdw7pLuOsqFkxpd4Pi6nQgCoUAKqzeipB1a92Op5kOxaEaiV26aS6pJQSOd0BXf6sPc9ug_pwS36sH72uSxL4N7frkkRlFu5saTby6CocEWK8joiWmsUfxxy46XpWa9AQVp1ZOZekk8OsSEtoSdFaL2GfH5mdNOnX2eW4wvM4J9B5R3wIH5IBZAXujbOzY08mElqeXV7yEJFJlmYAtO_b2uYcNIONtQXTg"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parcelReferenceCodes\": [1670394800355]\n}"
+						},
+						"url": {
+							"raw": "http://om.pctalent.ir/api/v1/Parcel/SendPickupByOperationStaff",
+							"protocol": "http",
+							"host": [
+								"om",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Parcel",
+								"SendPickupByOperationStaff"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "SubmitUnsuccessfulDeliveryByOperationStaff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var parcelReferenceCodesForSendDelivery = pm.collectionVariables.get(\"parcelReferenceCodesForSendDelivery\");\r",
+							"\r",
+							"if (parcelReferenceCodesForSendDelivery && parcelReferenceCodesForSendDelivery.length > 0) {\r",
+							"    postman.setNextRequest(\"SubmitUnsuccessfulDeliveryByOperationStaff\");\r",
+							"} else {\r",
+							"    postman.setNextRequest(\"SubmitConfirmReturnByVendorAgent\");\r",
+							"}\r",
+							"console.log(pm.collectionVariables.toObject())\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var parcelReferenceCodesForSendDelivery = pm.collectionVariables.get(\"parcelReferenceCodesForSendDelivery\")\r",
+							"var parcelReferenceCodeForSendDelivery = parcelReferenceCodesForSendDelivery.shift()\r",
+							"\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodesForSendDelivery\", parcelReferenceCodesForSendDelivery)\r",
+							"pm.collectionVariables.set(\"parcelReferenceCodeForSendDelivery\", parcelReferenceCodeForSendDelivery)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"parcelReferenceCode\": {{parcelReferenceCodeForSendDelivery}},\r\n    \"unsuccessfulOperationReasonId\": 103\r\n}"
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/SubmitUnsuccessfulDeliveryByOperationStaff",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"SubmitUnsuccessfulDeliveryByOperationStaff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubmitConfirmReturnByVendorAgent",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var vendorRedirectCodes = pm.collectionVariables.get(\"vendorRedirectCodes\")\r",
+							"var vendorRedirectCode = vendorRedirectCodes.shift()\r",
+							"pm.collectionVariables.set(\"vendorRedirectCodes\", vendorRedirectCodes)\r",
+							"pm.collectionVariables.set(\"vendorRedirectCode\", vendorRedirectCode)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (Object.keys(pm.collectionVariables.get(\"vendorRedirectCodes\")).length > 0) {\r",
+							"    postman.setNextRequest(\"SubmitConfirmReturnByVendorAgent\")\r",
+							"}\r",
+							"else{\r",
+							"    postman.setNextRequest(null)\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{vendorToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"vendorParcelCode\": {{vendorRedirectCode}},\n    \"deliveryCode\": 1111\n}"
+				},
+				"url": {
+					"raw": "{{vm}}/api/v1/DispatchRequest/SubmitConfirmReturnByVendorAgent",
+					"host": [
+						"{{vm}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"SubmitConfirmReturnByVendorAgent"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "precision",
+			"value": ""
+		},
+		{
+			"key": "vendorRedirectCodes",
+			"value": ""
+		},
+		{
+			"key": "parcelReferenceCodes",
+			"value": ""
+		},
+		{
+			"key": "parcelReferenceCodesForSendDelivery",
+			"value": ""
+		},
+		{
+			"key": "createRequestCount",
+			"value": ""
+		},
+		{
+			"key": "polygonStoresIds",
+			"value": ""
+		},
+		{
+			"key": "storeVendorCodes",
+			"value": ""
+		},
+		{
+			"key": "onDemandRequestLatitude",
+			"value": ""
+		},
+		{
+			"key": "onDemandRequestLongitude",
+			"value": ""
+		},
+		{
+			"key": "storeVendorCode",
+			"value": ""
+		},
+		{
+			"key": "parcelReferenceCodesForConfirmReturn",
+			"value": ""
+		},
+		{
+			"key": "storeIds",
+			"value": ""
+		},
+		{
+			"key": "onlineFleetsForAssignByOperationMethod",
+			"value": ""
+		},
+		{
+			"key": "parcelReferenceCode",
+			"value": ""
+		},
+		{
+			"key": "196",
+			"value": ""
+		},
+		{
+			"key": "197",
+			"value": ""
+		},
+		{
+			"key": "parcelReferenceCodeForSendDelivery",
+			"value": ""
+		},
+		{
+			"key": "vendorRedirectCode",
+			"value": ""
+		},
+		{
+			"key": "3604889",
+			"value": ""
+		},
+		{
+			"key": "5142089",
+			"value": ""
+		}
+	]
+}

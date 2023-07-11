@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "62ee1770-eb57-4684-bef1-e498235843f5",
+		"name": "okal_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"09123181638\",\r\n  \"password\": \"A123456@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CAAccount/Login",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CAAccount",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjkyNmFmM2Y2LTZkNDktNDY5NS1hYTY1LWExODY1ZTZiY2E0YiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDYzMzkzOTUsImV4cCI6MTY0NjM5OTM5NSwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.JlzK20b9szClPp75NjzuEtAsjntCwb4UnIAqqOX8jMg\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CAAccount/RefreshToken",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CAAccount",
+						"RefreshToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "acceptOrderV3",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImMwZWI0YzliLWYxNzItNDVjYy05N2Q1LWRhMTU4YmY1NTE3ZiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjc1ODE0NzA2LCJleHAiOjE2NzU4NzQ3MDYsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.ao2nXBlMGnyQT2BuQf79gIur8mu0mpba7GuIqzOMnXc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CustomerAgentId\": \"1\",\r\n    \"NationalCode\": \"1828134880\",\r\n    \"MobileNumber\": \"09164673479\",\r\n    \"OrderId\": \"7202785\",\r\n    \"OrderPartId\": \"6039784\",\r\n    \"UserId\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CustomerAgentOrder/acceptOrderV3",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CustomerAgentOrder",
+						"acceptOrderV3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrderDeliveryFinal",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjBlZDBhYWUzLWQ0MWQtNDIxNS1hYTliLTYwOGVmNjZmZGVhYyIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjUzNTYxNDgwLCJleHAiOjE2NTM2MjE0ODAsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.T7SB-QNKMSuK3Hfk-URgKX7MuUtvFDdrvfK9r1K314E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"OrderId\":\"38306319\",\"OrderPartId\":\"37842707\",\"DeliveryCode\":\"9519\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CustomerAgentOrder/OrderDeliveryFinal",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CustomerAgentOrder",
+						"OrderDeliveryFinal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "returnOrderRequestV3",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjhiNTQ0ZTQyLWVhMWEtNDFlZS05ZThlLWVkOWRiN2IwNzE0MCIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjc3NTY0NTgzLCJleHAiOjE2Nzc2MjQ1ODMsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.-bXVCl9iBq7GTSf-a8pbuk0sLcUvxA_M-u35qEw0dVs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"OrderReturnId\":0,\"OrderId\":\"48689143\",\"OrderPartId\":\"48069504\",\"Address\":\"خواف ، خیابان فرهنگ ، فرهنگ ۵  پلاک ۱۳ واحد ۱\",\"Description\":null,\"ReturnScheduleId\":null,\"ReturnMoneyCode\":0,\"AdminDescription\":null,\"DeliveryTime\":null,\"ShippingTime\":null,\"DeliveryName\":\"داود موحدی\",\"DeliveryMobile\":\"09153325398\",\"OperatorId\":0,\"Sheba\":null,\"StoreTypeId\":null,\"ReturnItems\":[{\"Quantity\":1,\"OrderItemId\":\"243066200\",\"ReturnOrderItemId\":0,\"ProductId\":\"18\",\"ReturnReasonId\":\"17\",\"ReturnScheduleId\":0,\"ProductStoreId\":2429},{\"Quantity\":1,\"OrderItemId\":\"243066203\",\"ReturnOrderItemId\":0,\"ProductId\":\"6018\",\"ReturnReasonId\":\"17\",\"ReturnScheduleId\":0,\"ProductStoreId\":2429},{\"Quantity\":1,\"OrderItemId\":\"243066201\",\"ReturnOrderItemId\":0,\"ProductId\":\"18120\",\"ReturnReasonId\":\"17\",\"ReturnScheduleId\":0,\"ProductStoreId\":2429},{\"Quantity\":1,\"OrderItemId\":\"243066204\",\"ReturnOrderItemId\":0,\"ProductId\":\"187947\",\"ReturnReasonId\":\"17\",\"ReturnScheduleId\":0,\"ProductStoreId\":2429},{\"Quantity\":1,\"OrderItemId\":\"243066202\",\"ReturnOrderItemId\":0,\"ProductId\":\"200384\",\"ReturnReasonId\":\"17\",\"ReturnScheduleId\":0,\"ProductStoreId\":2429}]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/ReturnOrder/returnOrderRequestV3",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"ReturnOrder",
+						"returnOrderRequestV3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConfirmReturnOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImM1ZDJjZTAyLTNhNTMtNDE0ZS04MjIyLWNkNTA0NzQzOTJkYiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NTIyNDkyOTIsImV4cCI6MTY1MjMwOTI5MiwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.Ckkmn4rYQwwbDm3as_GRn_kxpdr9OA98Y_SqNM0OxDU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Checker/ConfirmReturnOrder?OrderId=37693216 &ReturnCode=9685",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Checker",
+						"ConfirmReturnOrder"
+					],
+					"query": [
+						{
+							"key": "OrderId",
+							"value": "37693216 "
+						},
+						{
+							"key": "ReturnCode",
+							"value": "9685"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NotReadyOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImNlMTYyNjJkLTZiNDYtNDY1NC1hNDU5LTlkMWEyMGRiZDhhYiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDgzMDExNzEsImV4cCI6MTY0ODM2MTE3MSwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.3HxgoOrprCJ5tI_PuZw5nBYAR6g2DgnlkkVkEJUGTOc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"orderId\":0,\"coustomerAgentId\":0,\"NotReadyReason\":0}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CustomerAgentOrder/NotReadyOrder",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CustomerAgentOrder",
+						"NotReadyOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetReturnCode",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjMyZThmMmYwLTg1NzItNDY1Ny1hMWVhLWM3MTMzOGMzYTM4YSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjc3MDcxMzIxLCJleHAiOjE2NzcxMzEzMjEsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.rPEp9xzATXZqtZX01_WpIvn8muO2o3VQpMjJv_6ZOCY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Checker/GetReturnCode/48365717",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Checker",
+						"GetReturnCode",
+						"48365717"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReturnReasons",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImFjOWI0ZGMzLTZiMTQtNDU4Ni05NTU5LTNhNjU5MzdkNDc5NSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDgyODQ1MDAsImV4cCI6MTY0ODM0NDUwMCwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.96F76LLfC6fojS3PVPCOKsA3K1vEVZH97fttCJpw7Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": \"A.[StateCode]=1\",\r\n  \"parentId\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/ReturnReasons/GetLookupv2/",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"ReturnReasons",
+						"GetLookupv2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find driver",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImFjOWI0ZGMzLTZiMTQtNDU4Ni05NTU5LTNhNjU5MzdkNDc5NSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDgyODQ1MDAsImV4cCI6MTY0ODM0NDUwMCwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.96F76LLfC6fojS3PVPCOKsA3K1vEVZH97fttCJpw7Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\":\"09109868969\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/User/GetLookup",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"User",
+						"GetLookup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order Summary",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImFjOWI0ZGMzLTZiMTQtNDU4Ni05NTU5LTNhNjU5MzdkNDc5NSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDgyODQ1MDAsImV4cCI6MTY0ODM0NDUwMCwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.96F76LLfC6fojS3PVPCOKsA3K1vEVZH97fttCJpw7Sw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Order/GetOrderSummary?OrderId=21579006&typecode=2",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Order",
+						"GetOrderSummary"
+					],
+					"query": [
+						{
+							"key": "OrderId",
+							"value": "21579006"
+						},
+						{
+							"key": "typecode",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDeliveryCode",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjU3MjZjYTg4LTM0NTEtNGNiYy1hODJlLWU3ZDQ1M2VkN2VhZSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NTIyOTI1ODcsImV4cCI6MTY1MjM1MjU4NywiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.5Xrwu2ysDvLiEiHyNkJhl5dC6V533Zs-UWuuNWYII9I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/C/CustomerOrder/GetOrderSummaryForPAP/37757815",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"C",
+						"CustomerOrder",
+						"GetOrderSummaryForPAP",
+						"37757815"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrderRemain_okala",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjkzZGY5ZWM2LTBjODctNDMwZC04MjI4LTNiZmVmYzdhOTA5OCIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjUzMjEzMjkyLCJleHAiOjE2NTMyNzMyOTIsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.QyPhmUybUxznb2oX9G85RdoXY4WYMMSZqi4Bs-mOsZM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Order/GetOrderRemain?OrderId=38307731",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Order",
+						"GetOrderRemain"
+					],
+					"query": [
+						{
+							"key": "OrderId",
+							"value": "38307731"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment_okala",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImNlMTYyNjJkLTZiNDYtNDY1NC1hNDU5LTlkMWEyMGRiZDhhYiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyNzM1MyIsInJvbGUiOiIiLCJuYmYiOjE2NDgzMDExNzEsImV4cCI6MTY0ODM2MTE3MSwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZ2VudEFwcCJ9.3HxgoOrprCJ5tI_PuZw5nBYAR6g2DgnlkkVkEJUGTOc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"orderpartId\":\"34124836\",\"amount\":\"522022\",\"refNum\":\"802042129887\",\"termID\":\"63000078\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/C/CustomerPayment/StartPaymentV3",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"C",
+						"CustomerPayment",
+						"StartPaymentV3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order For Hasti",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjNiYmRjOGY0LTUzY2YtNDQzYS1iNGFlLTRkOTU0OTdhOGZlZiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjc2Mzk0NTQxLCJleHAiOjE2NzY0NTQ1NDEsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.tKUomIAoxEsTxYtvcaiJdiXsPTLeNH_d164znyGKsTQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Checker/GetOrderForHasti/48098974",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Checker",
+						"GetOrderForHasti",
+						"48098974"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BatchStatus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjFhZTVlMjQ2LTdjYWItNGY4My1iZWVlLTAxYzdkNGVjMWUxYiIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjUyNzg3MDcxLCJleHAiOjE2NTI4NDcwNzEsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.iPowIiAQ9zHy33KM302CjKvWuE4MHm5d0oF7CAqeUv0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[38015994\r\n,38022861\r\n,38026595\r\n,38024974\r\n,38031491\r\n,38009967\r\n,38007863\r\n,38033589\r\n,38013380\r\n,38033851\r\n,38017957\r\n,38017540\r\n,38036049\r\n,38038614\r\n,38038984\r\n,38040252\r\n,38044136\r\n,38047878\r\n,38051839\r\n,38053942]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaadmin-srv.gig.services/Checker/GetOrderStatus",
+					"protocol": "https",
+					"host": [
+						"okalaadmin-srv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Checker",
+						"GetOrderStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancleReplaceOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6IjQ2NTA5MzQ0LWUzYWMtNGZjNS1iNjc5LTVjZWI5NTcwY2I4MCIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjcwNzM4OTQxLCJleHAiOjE2NzA3OTg5NDEsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.QSyvc0aGpOySg5UJywVN9HyBGgi5PoxlLSc6EODSVyg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "dev-api-admin-legacy.okala.com"
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTEyMzE4MTYzOCIsImp0aSI6ImFhNzBjMGFjLWJiODYtNGNjNC1iZWU0LWRiZWU3OGYxMjkyNSIsInVzZXJuYW1lIjoiMDkxMjMxODE2MzgiLCJ1c2VySWQiOiIyMDk0MTMiLCJyb2xlIjoiIiwibmJmIjoxNjcwMzA4NjE3LCJleHAiOjE2NzAzNjg2MTcsImlzcyI6IkdvbHJhbmdTeXRldGVtIiwiYXVkIjoiQWdlbnRBcHAifQ.ij8MoFWnspVL_oUt2yeOci7KQ-URaDFbvUiM2tzChh4"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "https://dev-admin-legacy.okala.com"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "referer",
+						"value": "https://dev-admin-legacy.okala.com/"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-site"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+					}
+				],
+				"url": {
+					"raw": "https://okalaadmin-srv.gig.services/ReplaceOrder/CancleReplaceOrder?orderId=44906324&replaceId=9",
+					"protocol": "https",
+					"host": [
+						"okalaadmin-srv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"ReplaceOrder",
+						"CancleReplaceOrder"
+					],
+					"query": [
+						{
+							"key": "orderId",
+							"value": "44906324"
+						},
+						{
+							"key": "replaceId",
+							"value": "9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "returnOrderRequestV3-1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "okalaadmin-srv.gig.services"
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOTE5ODA1NDMyMCIsImp0aSI6ImI2YzdiYWQxLTkwYTQtNDJiMy1iMzY0LTQwZGQ5YTZjNDhmNiIsInVzZXJuYW1lIjoiMDkxOTgwNTQzMjAiLCJkaXNwbGF5bmFtZSI6Itix2YjYrSDYp9mE2YTZhyDYrNi52YHYsduMIiwidXNlcklkIjoiNTY5MDI1Iiwicm9sZXMiOiJbXCJBZG1pblwiXSIsInJvdXRlcyI6IltcIipcIl0iLCJuYmYiOjE2NzAzMTcyNjIsImV4cCI6MTY3MDM3NzI2MiwiaXNzIjoiR29scmFuZ1N5dGV0ZW0iLCJhdWQiOiJBZG1pblBhbmVsIn0.JdObf9lL2DK5ZIxlWqCnLk7jZh3G9-fiESV_oskO9co"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "https://okala-admin.gig.services"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "referer",
+						"value": "https://okala-admin.gig.services/"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-site"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"orderReturnId\": 0,\n  \"orderId\": 44994484,\n  \"orderPartId\": 44418049,\n  \"address\": \"انتهای بلوار جانبازان جنب کلانتری 13 سوپر مهر سلیمانی\",\n  \"description\": null,\n  \"returnScheduleId\": null,\n  \"returnItems\": [\n    {\n      \"quantity\": 3,\n      \"orderItemId\": 226118277,\n      \"returnOrderItemId\": 0,\n      \"productId\": 3273,\n      \"returnReasonId\": \"3\",\n      \"returnScheduleId\": 0,\n      \"productStoreId\": 5752\n    },\n    {\n      \"quantity\": 5,\n      \"orderItemId\": 226118278,\n      \"returnOrderItemId\": 0,\n      \"productId\": 150296,\n      \"returnReasonId\": \"3\",\n      \"returnScheduleId\": 0,\n      \"productStoreId\": 5752\n    }\n  ],\n  \"returnMoneyCode\": 0,\n  \"adminDescription\": null,\n  \"deliveryTime\": null,\n  \"ShippingTime\": null,\n  \"deliveryName\": \"امیرعباس سلیمانی\",\n  \"deliveryMobile\": \"09222875220\",\n  \"OperatorId\": 0,\n  \"sheba\": null,\n  \"storeTypeId\": null\n}"
+				},
+				"url": {
+					"raw": "https://okalaadmin-srv.gig.services/ReturnOrder/returnOrderRequestV3",
+					"protocol": "https",
+					"host": [
+						"okalaadmin-srv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"ReturnOrder",
+						"returnOrderRequestV3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

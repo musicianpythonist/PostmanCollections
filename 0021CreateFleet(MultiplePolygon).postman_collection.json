@@ -1,0 +1,1353 @@
+{
+	"info": {
+		"_postman_id": "ed993d29-bfbc-4a31-b36d-0ca30a1e4271",
+		"name": "0021CreateFleet(MultiplePolygon)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken)\r",
+							"pm.collectionVariables.set(\"precision\", 1e3)\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()\r",
+							"\r",
+							"if (typeof (pm.globals.get(\"PolygonIds\")) == \"string\") {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\")).match(/\\d+/g).map(Number)\r",
+							"}\r",
+							"else {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\"))\r",
+							"}\r",
+							"\r",
+							"\r",
+							"if (polygonIds.length != 0) {\r",
+							"\tvar polygonId = polygonIds.shift()\r",
+							"\tpm.globals.set(\"PolygonId\", polygonId)\r",
+							"\tpm.globals.set(\"PolygonIds\", polygonIds)\r",
+							"\tif (!pm.globals.get(\"_PolygonIds\")) {\r",
+							"\t\tpm.globals.set(\"_PolygonIds\")\r",
+							"\t\tvar _polygonIds = []\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"\telse {\r",
+							"\t\tvar _polygonIds = pm.globals.get(\"_PolygonIds\")\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"}\r",
+							"else {\r",
+							"\tpm.globals.set(\"PolygonIds\", pm.globals.get(\"_PolygonIds\"))\r",
+							"\tpm.globals.unset(\"PolygonId\")\r",
+							"\tpm.globals.unset(\"_PolygonIds\")\r",
+							"\tpostman.setNextRequest(null)\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "09123456799",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12#$56&*Ab",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPolygonName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"polygonName\", response.title)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "host",
+						"value": "dp.pctalent.ir"
+					},
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetById/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetById",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateDriver",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"driverId\", response.id);\r",
+							"pm.collectionVariables.set(\"driverCode\", response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var randNum = Math.floor(Math.random()* 10000) ;\r",
+							"var mobile = \"0916\" + String(Math.floor(1000000 + Math.random() * 9000000));\r",
+							"var driverName = pm.collectionVariables.get(\"polygonName\");\r",
+							"var driverSurname = String(Math.floor(1000 + Math.random() * 9000));\r",
+							"pm.collectionVariables.set(\"driverFullName\", String(driverName + \" \" + driverSurname));\r",
+							"pm.collectionVariables.set(\"driverMobile\", mobile);\r",
+							"\r",
+							"function generateNationalCode() {\r",
+							"  let numbers = []\r",
+							"  let sum = 0\r",
+							"  for (let i = 10; i >= 2; i--) {\r",
+							"    let j = Math.floor(Math.random() * 10)\r",
+							"    numbers.push(j)\r",
+							"    sum += j * i\r",
+							"  }\r",
+							"  const m = sum % 11\r",
+							"  numbers.push(m < 2 ? m : 11 - m)\r",
+							"  return numbers.join('')\r",
+							"}\r",
+							"\r",
+							"var body = {\r",
+							"    mode: 'raw',\r",
+							"    raw: JSON.stringify({\r",
+							"        \"firstName\": String(driverName),\r",
+							"        \"lastName\": String(driverSurname),\r",
+							"        \"nationalCode\": String(generateNationalCode()),\r",
+							"        \"mobile\": mobile,\r",
+							"        \"phone\": \"066\" + String(Math.floor(10000000 + Math.random() * 90000000)),\r",
+							"        \"address\": \"آدرس محل سکونت\"\r",
+							"    }),\r",
+							"    options: {\r",
+							"        raw: {\r",
+							"            language: \"JSON\"\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/Driver/Create",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Driver",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeDriverPassword",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var body = {\r",
+							"    mode: 'raw',\r",
+							"    raw: JSON.stringify({\r",
+							"        \"code\": pm.collectionVariables.get(\"driverCode\"),\r",
+							"        \"newPassword\": \"123456789a\",\r",
+							"        \"confirmPassword\": \"123456789a\"\r",
+							"    }),\r",
+							"    options: {\r",
+							"        raw: {\r",
+							"            language: \"JSON\"\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/Driver/ChangeDriverPassword",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Driver",
+						"ChangeDriverPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerateDriverToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"driverToken = JsonData.access_token\r",
+							"pm.environment.set(\"driverToken\", driverToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{driverMobile}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789a",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateFleet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function VanPlataGenerator() {\r",
+							"    var alphabet = ['ع', 'ب', 'ج', 'د', 'م', 'ه', 'ی', 'ک', 'ز', 'س', 'ط'];\r",
+							"    var plateNumber = String(Math.floor(10 + Math.random() * 90)) + \"-\" + String(alphabet[Math.floor(Math.random() * alphabet.length)]) + \"-\" + String(Math.floor(100 + Math.random() * 900)) + \"-\" + String(Math.floor(10 + Math.random() * 90));\r",
+							"    console.log(plateNumber)\r",
+							"    pm.collectionVariables.set(\"plateNumber\", plateNumber)\r",
+							"    return plateNumber\r",
+							"}\r",
+							"\r",
+							"function MotocyclePlateGenerator() {\r",
+							"    var plateNumber1 = Math.floor(100 + Math.random() * 900);\r",
+							"    var plateNumber2 = Math.floor(10000 + Math.random() * 90000);\r",
+							"    var plateNumber = String(plateNumber1) + \"-\" + String(plateNumber2)\r",
+							"    pm.collectionVariables.set(\"plateNumber\", plateNumber);\r",
+							"    return plateNumber\r",
+							"}\r",
+							"\r",
+							"var vehicleTypes = [1, 4];\r",
+							"var vehicleType = vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)];\r",
+							"console.log(\"vehicleType : \" + vehicleType)\r",
+							"\r",
+							"if (vehicleType == 1) {\r",
+							"    MotocyclePlateGenerator();\r",
+							"    var body = {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            \"plateNumber\": pm.collectionVariables.get(\"plateNumber\"),\r",
+							"            \"driverId\": pm.collectionVariables.get(\"driverId\"),\r",
+							"            \"vehicleTypeId\": vehicleType\r",
+							"        }),\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"JSON\"\r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else {\r",
+							"    VanPlataGenerator();\r",
+							"    var body = {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            \"plateNumber\": pm.collectionVariables.get(\"plateNumber\"),\r",
+							"            \"driverId\": pm.collectionVariables.get(\"driverId\"),\r",
+							"            \"vehicleTypeId\": vehicleType\r",
+							"        }),\r",
+							"        options: {\r",
+							"            raw: {\r",
+							"                language: \"JSON\"\r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/Create",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFleetId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"fleetId\", response.result[0].fleetId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/GetDriverPagedList?PlateNumber={{plateNumber}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"GetDriverPagedList"
+					],
+					"query": [
+						{
+							"key": "PlateNumber",
+							"value": "{{plateNumber}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AssignFleet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var body = {\r",
+							"    mode: 'raw',\r",
+							"    raw: JSON.stringify({\r",
+							"        \"polygonId\": pm.globals.get(\"PolygonId\"),\r",
+							"        \"fleetIds\": [pm.collectionVariables.get(\"fleetId\")]\r",
+							"    }),\r",
+							"    options: {\r",
+							"        raw: {\r",
+							"            language: \"JSON\"\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.request.body.update(body);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/AssignFleet",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"AssignFleet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetShiftFleetList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"_.each(response, fs => {\r",
+							"\tif (fs.startTime == '00:01:00' && fs.endTime == '23:59:00') {\r",
+							"\t\tpm.collectionVariables.set(\"shiftId\", fs.id)\r",
+							"\t\tpostman.setNextRequest(\"GetDriverShifts\")\r",
+							"\t}\r",
+							"})\r",
+							"var shiftId = pm.collectionVariables.get(\"shiftId\")\r",
+							"if (shiftId == null) {\r",
+							"\tpostman.setNextRequest(\"CreateShift\")\r",
+							"}\r",
+							"else {\r",
+							"\tconsole.log(\"shiftId : \" + String(shiftId) + \" selected!\")\r",
+							"\tpostman.setNextRequest(\"AssignShift\")\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/ShiftConfiguration/GetShiftFleetList",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ShiftConfiguration",
+						"GetShiftFleetList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateShift",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"startTime\": \"00:01\",\r\n\t\"endTime\": \"23:59\"\r\n}"
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/ShiftConfiguration/Create",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ShiftConfiguration",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetShiftFleetList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"_.each(response, fs =>{\r",
+							"\tif (fs.startTime == '00:01:00' && fs.endTime == '23:59:00'){\r",
+							"\t\tpm.collectionVariables.set(\"shiftId\", fs.id)\r",
+							"\t\tpostman.setNextRequest(\"AssignShift\")\r",
+							"\t}\r",
+							"\telse{\r",
+							"\t\tconsole.log(\"full time shift doesn't exists!\")\r",
+							"\t\tpostman.setNextRequest(null)\r",
+							"\t}\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/ShiftConfiguration/GetShiftFleetList",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ShiftConfiguration",
+						"GetShiftFleetList"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/ShiftConfiguration/GetShiftFleetList",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkxXNjhaSktPVVRUUDVCVUtRSlNGUlo3WFhQWTBDV0dIVkJQVlVFX1MiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwib2lfYXVfaWQiOiJmNWZhNGFjOC1lYWFmLTRkZDAtYWExNS0zNTZjNWNmOWQ4MDUiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNmJkYTFjMGEtYTVkNC00MzE2LTljYjUtZTk3ZGU5ODhjZjQzIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb2ZmbGluZV9hY2Nlc3MgcHJvZmlsZSIsImV4cCI6MTY3NDMwMjkwMiwiaWF0IjoxNjc0Mjk5MzAyfQ.YQ-OtB8vmAxK38ht5F2csjndSWXT8qVupxt2AaIc7Ii79X2vv5ad8AqWQAD57Kv-85FwnNgvGHsmXYfRZKkUq_oVpOQ-eFcCXM6d0dBRq5JNsQ722-fixTEcHR6G_BHHWEbH67QEiO_1QSztxnD7X65YdghUySSfmY3Jt7066fi8DJ6q3LrAlurEDfPdLTd-GgpvXxUDEL9DgB3azFcpDBWyJjpRRuAScSqttHGayjpw-emFUjopItdAxtYKBEwif3yxdozxIT-cHxIv7iVjvXhQ5QFu-FOku8FduG277TCdPbE-oAxEcNwMlGGuexZ8bH1JekpMAoDjzeCeyflEmQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/ShiftConfiguration/GetShiftFleetList",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ShiftConfiguration",
+								"GetShiftFleetList"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "AssignShift",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var shiftId = pm.collectionVariables.get(\"shiftId\")\r",
+							"\r",
+							"var body = {\r",
+							"    mode: 'raw',\r",
+							"    raw: JSON.stringify({\r",
+							"        \"fleetId\": pm.collectionVariables.get(\"fleetId\"),\r",
+							"        \"shifts\": [\r",
+							"            {\r",
+							"                \"weekDayId\": 6,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 0,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 1,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 2,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 3,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 4,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            },\r",
+							"            {\r",
+							"                \"weekDayId\": 5,\r",
+							"                \"shiftConfigurationId\": shiftId\r",
+							"            }\r",
+							"        ]\r",
+							"    }),\r",
+							"    options: {\r",
+							"        raw: {\r",
+							"            language: \"JSON\"\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.request.body.update(body);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/AssignShift",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"AssignShift"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCustomerId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"for (i = 0; i < Object.keys(response.result).length; i ++){\r",
+							"    if (response.result[i].fleetId == pm.collectionVariables.get(\"fleetId\")){\r",
+							"        pm.collectionVariables.set(\"customerId\", response.result[i].customerId);\r",
+							"    }\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/GetDriverPagedList",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"GetDriverPagedList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LocationGenerator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var precision = pm.collectionVariables.get(\"precision\")\r",
+							"var latitude = 0,\r",
+							"    longitude = 0;\r",
+							"\r",
+							"for (i = 0; i < Object.keys(response.borderPoints).length; i++) {\r",
+							"    latitude += response.borderPoints[i].latitude;\r",
+							"    longitude += response.borderPoints[i].longitude;\r",
+							"}\r",
+							"latitude = Math.random() / precision + latitude/Object.keys(response.borderPoints).length;\r",
+							"longitude = Math.random() / precision + longitude/Object.keys(response.borderPoints).length;\r",
+							"\r",
+							"pm.collectionVariables.set(\"latitude\", latitude);\r",
+							"pm.collectionVariables.set(\"longitude\", longitude);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetById/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetById",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI4ZjQ3MjMwMS02YWUzLTRlNWItODg3OC1iNDkwOTM5ZGFlYjIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NTMxOTAyMSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjUzMTU0MjF9.Ov0MgfMEgbcHNYTtExap3PbkdE61C2Kdd8EUiAQ-gCnDO7ys3Uqlz04cDQmTz9RqtW6xT_llkTKWnlalgsSzC7YxQSWky76q9HKgs2t0jwofQOQD_ewF2zOURVTV1ghEtYMO32BB_j0x8hGpKGlo1Wm8ShPWvhN5XYvTe3dzUERtyVX1x7RuyMMkepmv1jbaNh7vXBIfTIv_g-x4Ny2zgFFSq7YpJHLGzPSVvJVc0F3BTA4WmFXflYPe2DStP8Z74PNZ9LSGgdJBZsgSIKqQ35g51NUVdI6tGQWEWWiUTZ9UNB3D9Hyklk0yuZWE75FMEhq5O2TS2tAQabXONACRcQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetById",
+								"103"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "SendDriverLocation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var lat = Math.random() / 100 + pm.collectionVariables.get(\"latitude\");\r",
+							"var long = Math.random() / 100 + pm.collectionVariables.get(\"longitude\");\r",
+							"\r",
+							"var body = {\r",
+							"    mode: 'raw',\r",
+							"    raw: JSON.stringify({\r",
+							"        \"latitude\": lat,\r",
+							"        \"longitude\": long,\r",
+							"        \"fleetStatusId\": 5,\r",
+							"        \"userName\": String(pm.globals.get(\"driverMobile\")),\r",
+							"        \"name\": String(pm.collectionVariables.get(\"driverFullName\")),\r",
+							"        \"fleetId\": pm.collectionVariables.get(\"fleetId\"),\r",
+							"        \"customerId\": pm.collectionVariables.get(\"customerId\"),\r",
+							"        \"isPush\": true\r",
+							"    }),\r",
+							"    options: {\r",
+							"        raw: {\r",
+							"            language: \"JSON\"\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{app}}/api/v1/Develop/SendDriverLocation",
+					"host": [
+						"{{app}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Develop",
+						"SendDriverLocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeCurrentFleetStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(String(pm.collectionVariables.get(\"driverFullName\")));\r",
+							"\r",
+							"if (Object.keys(pm.globals.get(\"PolygonIds\")).length != 0) {\r",
+							"\tsetTimeout(function () {\r",
+							"\t\tconsole.log(\"switch to next polygon\")\r",
+							"\t\tconsole.log(pm.globals.toObject())\r",
+							"\t}, 1000)\r",
+							"\tpostman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"}\r",
+							"else {\r",
+							"\tconsole.log(pm.collectionVariables.toObject())\r",
+							"\tvar _PolygonIds = pm.globals.get(\"_PolygonIds\")\r",
+							"\tpm.globals.set(\"PolygonIds\", _PolygonIds)\r",
+							"\tpm.globals.unset(\"PolygonId\")\r",
+							"\tpm.globals.unset(\"_PolygonIds\")\r",
+							"\tpostman.setNextRequest(null);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var lat = pm.collectionVariables.get(\"latitude\");\r",
+							"var long = pm.collectionVariables.get(\"longitude\");\r",
+							"\r",
+							"\r",
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"    \"latitude\": lat,\r",
+							"    \"longitude\": long,\r",
+							"    \"fleetStatusId\": 5\r",
+							"}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{driverToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{app}}/api/v1/Driver/ChangeCurrentFleetStatus",
+					"host": [
+						"{{app}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Driver",
+						"ChangeCurrentFleetStatus"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "precision",
+			"value": ""
+		},
+		{
+			"key": "polygonName",
+			"value": ""
+		},
+		{
+			"key": "driverFullName",
+			"value": ""
+		},
+		{
+			"key": "driverMobile",
+			"value": ""
+		},
+		{
+			"key": "driverId",
+			"value": ""
+		},
+		{
+			"key": "driverCode",
+			"value": ""
+		},
+		{
+			"key": "plateNumber",
+			"value": ""
+		},
+		{
+			"key": "fleetId",
+			"value": ""
+		},
+		{
+			"key": "shiftId",
+			"value": ""
+		},
+		{
+			"key": "customerId",
+			"value": ""
+		},
+		{
+			"key": "latitude",
+			"value": ""
+		},
+		{
+			"key": "longitude",
+			"value": ""
+		}
+	]
+}

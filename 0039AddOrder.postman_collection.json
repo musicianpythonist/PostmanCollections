@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "0dc91830-181f-4b81-aa2c-2897736f8fcc",
+		"name": "0039AddOrder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateVendorToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"body = JSON.parse(responseBody)\r",
+							"vendorToken = body.access_token\r",
+							"pm.environment.set(\"vendorToken\", vendorToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "basic token",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Postman_Token",
+						"value": "<calculated when request is sent>",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{vendorUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{vendorPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://okala-dev.hastiparcel.local/api/v1/VendorAgent/AddOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "host",
+						"value": "okala-dev.hastiparcel.local"
+					},
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{vendorToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order\": {\r\n        \"orderId\": 40070011,\r\n        \"customOrderNumber\": \"22071138429941\",\r\n        \"orderPartId\": 39560675,\r\n        \"remain\": 834000.0,\r\n        \"invoiceValue\": 834000.0000,\r\n        \"storeId\": 2412,\r\n        \"customerFirstName\": \"مینا\",\r\n        \"customerLastName\": \"بهیار\",\r\n        \"customerAddress\": \"خیابان پور داوود بین هلالی و فراهانی\",\r\n        \"customerMobile\": \"09373859316\",\r\n        \"customerLat\": 31.329006,\r\n        \"customerLng\": 48.639924,\r\n        \"deliveryCode\": 1164,\r\n        \"createdOn\": \"7/11/2022 11:25:53 AM\",\r\n        \"createdOnTitle\": \"دوشنبه 1401/4/20 ساعت 7/11/2022 11:25:53 AM\",\r\n        \"shippingStartTime\": \"1401/4/20 11:25\",\r\n        \"shippingFinishTime\": \"1401/4/20 12:25\",\r\n        \"shippingTypeCode\": 1,\r\n        \"statusCode\": 41,\r\n        \"storeName\": \"شیخ بها افق کوروش اهواز\",\r\n        \"plaque\": \"۲۸۰\",\r\n        \"unit\": \"۱\",\r\n        \"customerOrderName\": \"احمد سیستان\"\r\n    },\r\n    \"orderItem\": [\r\n        {\r\n            \"orderItemId\": 196772336,\r\n            \"orderItemTitle\": \"گوش پاکن 100 عددی لیوانی پنبه ریز\",\r\n            \"orderItemCode\": 754,\r\n            \"count\": 1,\r\n            \"orderItemPrice\": 149000.0000\r\n        },\r\n        {\r\n            \"orderItemId\": 196772337,\r\n            \"orderItemTitle\": \"خامه استریل  200 گرمی پگاه \",\r\n            \"orderItemCode\": 2946,\r\n            \"count\": 2,\r\n            \"orderItemPrice\": 200000.0000\r\n        },\r\n        {\r\n            \"orderItemId\": 196772333,\r\n            \"orderItemTitle\": \"رشته سوپی ورمیشل 500 گرمی مانا\",\r\n            \"orderItemCode\": 23105,\r\n            \"count\": 1,\r\n            \"orderItemPrice\": 198000.0000\r\n        },\r\n        {\r\n            \"orderItemId\": 196772335,\r\n            \"orderItemTitle\": \"کیسه فریزر تقویمی چسب دار 100عددی پتروکلین\",\r\n            \"orderItemCode\": 193345,\r\n            \"count\": 1,\r\n            \"orderItemPrice\": 149000.0000\r\n        },\r\n        {\r\n            \"orderItemId\": 196772334,\r\n            \"orderItemTitle\": \"وازلین معطر 100 گرمی نینورتا\",\r\n            \"orderItemCode\": 195824,\r\n            \"count\": 1,\r\n            \"orderItemPrice\": 138000.0000\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://okala-dev.hastiparcel.local/api/v1/VendorAgent/AddOrder",
+					"protocol": "http",
+					"host": [
+						"okala-dev",
+						"hastiparcel",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"AddOrder"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

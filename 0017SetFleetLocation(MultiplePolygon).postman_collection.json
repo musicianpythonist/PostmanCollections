@@ -1,0 +1,671 @@
+{
+	"info": {
+		"_postman_id": "871fdd61-f6e5-4338-a862-542529b7081b",
+		"name": "0017SetFleetLocation(MultiplePolygon)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken);\r",
+							"pm.collectionVariables.set(\"PageIndex\", 0)\r",
+							"pm.collectionVariables.set(\"precision\", 1e3)\r",
+							"pm.collectionVariables.set(\"flag\", 1)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()\r",
+							"\r",
+							"if (typeof (pm.globals.get(\"PolygonIds\")) == \"string\") {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\")).match(/\\d+/g).map(Number)\r",
+							"}\r",
+							"else {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\"))\r",
+							"}\r",
+							"\r",
+							"\r",
+							"if (polygonIds.length != 0) {\r",
+							"\tvar polygonId = polygonIds.shift()\r",
+							"\tpm.globals.set(\"PolygonId\", polygonId)\r",
+							"\tpm.globals.set(\"PolygonIds\", polygonIds)\r",
+							"\tif (!pm.globals.get(\"_PolygonIds\")) {\r",
+							"\t\tpm.globals.set(\"_PolygonIds\")\r",
+							"\t\tvar _polygonIds = []\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"\telse {\r",
+							"\t\tvar _polygonIds = pm.globals.get(\"_PolygonIds\")\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"}\r",
+							"else {\r",
+							"\tpm.globals.set(\"PolygonIds\", pm.globals.get(\"_PolygonIds\"))\r",
+							"\tpm.globals.unset(\"PolygonId\")\r",
+							"\tpm.globals.unset(\"_PolygonIds\")\r",
+							"\tpostman.setNextRequest(null)\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{operationUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{operationPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDriverPagedList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var PageIndex = pm.collectionVariables.get(\"PageIndex\")\r",
+							"\r",
+							"if (pm.collectionVariables.get(\"flag\")) {\r",
+							"\tpm.collectionVariables.set(\"totalCount\", response.totalCount)\r",
+							"}\r",
+							"if (!pm.collectionVariables.get(\"fleetIds\")) {\r",
+							"\tconsole.log(\"fleetIds doesn't exists!\")\r",
+							"\tvar fleetIds = [];\r",
+							"\tvar customerIds = [];\r",
+							"\tvar firstNames = [];\r",
+							"\tvar lastNames = [];\r",
+							"\tvar phones = [];\r",
+							"\r",
+							"\tfor (i = 0; i < Object.keys(response.result).length; i++) {\r",
+							"\t\tfleetIds.push(response.result[i].fleetId);\r",
+							"\t\tcustomerIds.push(response.result[i].customerId);\r",
+							"\t\tfirstNames.push(response.result[i].firstName);\r",
+							"\t\tlastNames.push(response.result[i].lastName);\r",
+							"\t\tphones.push(response.result[i].mobile);\r",
+							"\t}\r",
+							"\tpm.collectionVariables.set(\"fleetIds\", fleetIds);\r",
+							"\tpm.collectionVariables.set(\"customerIds\", customerIds);\r",
+							"\tpm.collectionVariables.set(\"firstNames\", firstNames);\r",
+							"\tpm.collectionVariables.set(\"lastNames\", lastNames);\r",
+							"\tpm.collectionVariables.set(\"phones\", phones);\r",
+							"}\r",
+							"else {\r",
+							"\tconsole.log(\"fleetIds exists!\")\r",
+							"\tvar fleetIds = pm.collectionVariables.get(\"fleetIds\");\r",
+							"\tvar customerIds = pm.collectionVariables.get(\"customerIds\");\r",
+							"\tvar firstNames = pm.collectionVariables.get(\"firstNames\");\r",
+							"\tvar lastNames = pm.collectionVariables.get(\"lastNames\");\r",
+							"\tvar phones = pm.collectionVariables.get(\"phones\");\r",
+							"\r",
+							"\tfor (i = 0; i < Object.keys(response.result).length; i++) {\r",
+							"\t\tfleetIds.push(response.result[i].fleetId);\r",
+							"\t\tcustomerIds.push(response.result[i].customerId);\r",
+							"\t\tfirstNames.push(response.result[i].firstName);\r",
+							"\t\tlastNames.push(response.result[i].lastName);\r",
+							"\t\tphones.push(response.result[i].mobile);\r",
+							"\t}\r",
+							"\tconsole.log(\"length of fleetIds : \" + fleetIds.length)\r",
+							"\tpm.collectionVariables.set(\"fleetIds\", fleetIds);\r",
+							"\tpm.collectionVariables.set(\"customerIds\", customerIds);\r",
+							"\tpm.collectionVariables.set(\"firstNames\", firstNames);\r",
+							"\tpm.collectionVariables.set(\"lastNames\", lastNames);\r",
+							"\tpm.collectionVariables.set(\"phones\", phones);\r",
+							"}\r",
+							"if (pm.collectionVariables.get(\"totalCount\") - 100 > 0) {\r",
+							"\tpm.collectionVariables.set(\"flag\", 0)\r",
+							"\tpm.collectionVariables.set(\"totalCount\", pm.collectionVariables.get(\"totalCount\") - 100)\r",
+							"\tpm.collectionVariables.set(\"PageIndex\", PageIndex + 1)\r",
+							"\tpostman.setNextRequest(\"GetDriverPagedList\")\r",
+							"}\r",
+							"else {\r",
+							"\tpostman.setNextRequest(\"LocationGenerator\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/GetDriverPagedList?PageIndex={{PageIndex}}&PageSize=100&PolygonId={{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"GetDriverPagedList"
+					],
+					"query": [
+						{
+							"key": "PageIndex",
+							"value": "{{PageIndex}}"
+						},
+						{
+							"key": "PageSize",
+							"value": "100"
+						},
+						{
+							"key": "PolygonId",
+							"value": "{{PolygonId}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Fleet/GetDriverPagedList?PolygonId=115",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlNDTUMyWDhSMkgtSVJSRUhQSDFUWjZENkhVVTI4TkZGTUwyUE1HNEIiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiIyZjQxNGY5Yy0zMWY0LTQ0NzYtYjMzMi03N2Y3ZWIxYmU5YTUiLCJuYW1lIjoiMDkxMDQxNjIwNjIiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI0YzU3YzdkMy03OGEyLTRmZDgtYWNlNi1hM2JlYzU5Mzg1NzciLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NjEwMzg3OSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjYxMDAyNzl9.eemYqMuLHxreCV0lwFvB7KH8_PkMOa3OGgz670cKClIStdb0UZW-U2HZ6Tfn2dKhc4AD2UX2anpWLpoWlJyJGq5yiAqHnh2ezOPejZK1khdK0w6T2m14ngf8ZmYJOy2uPiFULovXNP2DMWKaou5Qxe0HBOrtbo8O3bgrQxoyKQS-Z_9dL-4O-22vtJJkYxw9OUEtBWV36FFfpUsJer3sQZaxMOagQRZSRfiuwEH5NicYn0ebuA9I2puLHoDyN5eC2-Avx_qGf23NPVvXVrc9PVhKvNCsboSmm-2peWtZu5UakbgQXUqe0apIYv-0ziW1YhHshBFehZx_NNcAq2sNjQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Fleet/GetDriverPagedList?PolygonId=115",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Fleet",
+								"GetDriverPagedList"
+							],
+							"query": [
+								{
+									"key": "PolygonId",
+									"value": "115"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "LocationGenerator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var latitude = 0,\r",
+							"    longitude = 0;\r",
+							"\r",
+							"for (i = 0; i < Object.keys(response.borderPoints).length; i++) {\r",
+							"    latitude += response.borderPoints[i].latitude;\r",
+							"    longitude += response.borderPoints[i].longitude;\r",
+							"}\r",
+							"var precision = pm.collectionVariables.get(\"precision\")\r",
+							"latitude = Math.random() / precision + latitude/Object.keys(response.borderPoints).length;\r",
+							"longitude = Math.random() / precision + longitude/Object.keys(response.borderPoints).length;\r",
+							"\r",
+							"pm.collectionVariables.set(\"Latitude\", latitude);\r",
+							"pm.collectionVariables.set(\"Longitude\", longitude);\r",
+							"\r",
+							"console.log(latitude, longitude)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetById/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetById",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI4ZjQ3MjMwMS02YWUzLTRlNWItODg3OC1iNDkwOTM5ZGFlYjIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NTMxOTAyMSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjUzMTU0MjF9.Ov0MgfMEgbcHNYTtExap3PbkdE61C2Kdd8EUiAQ-gCnDO7ys3Uqlz04cDQmTz9RqtW6xT_llkTKWnlalgsSzC7YxQSWky76q9HKgs2t0jwofQOQD_ewF2zOURVTV1ghEtYMO32BB_j0x8hGpKGlo1Wm8ShPWvhN5XYvTe3dzUERtyVX1x7RuyMMkepmv1jbaNh7vXBIfTIv_g-x4Ny2zgFFSq7YpJHLGzPSVvJVc0F3BTA4WmFXflYPe2DStP8Z74PNZ9LSGgdJBZsgSIKqQ35g51NUVdI6tGQWEWWiUTZ9UNB3D9Hyklk0yuZWE75FMEhq5O2TS2tAQabXONACRcQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetById",
+								"103"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "SendDriverLocation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var fleetIds = pm.collectionVariables.get(\"fleetIds\");\r",
+							"var customerIds = pm.collectionVariables.get(\"customerIds\");\r",
+							"var firstNames = pm.collectionVariables.get(\"firstNames\");\r",
+							"var lastNames = pm.collectionVariables.get(\"lastNames\");\r",
+							"var phones = pm.collectionVariables.get(\"phones\");\r",
+							"var precision = pm.collectionVariables.get(\"precision\")\r",
+							"\r",
+							"var fleetId = fleetIds.shift();\r",
+							"var customerId = customerIds.shift();\r",
+							"var firstName = firstNames.shift();\r",
+							"var lastName = lastNames.shift();\r",
+							"var phone = phones.shift();\r",
+							"\r",
+							"pm.collectionVariables.set(\"fleetId\", fleetId);\r",
+							"pm.collectionVariables.set(\"fleetIds\", fleetIds);\r",
+							"\r",
+							"pm.collectionVariables.set(\"customerId\", customerId);\r",
+							"pm.collectionVariables.set(\"customerIds\", customerIds);\r",
+							"\r",
+							"pm.collectionVariables.set(\"firstName\", firstName);\r",
+							"pm.collectionVariables.set(\"firstNames\", firstNames);\r",
+							"\r",
+							"pm.collectionVariables.set(\"lastName\", lastName);\r",
+							"pm.collectionVariables.set(\"lastNames\", lastNames);\r",
+							"\r",
+							"pm.collectionVariables.set(\"phone\", phone);\r",
+							"pm.collectionVariables.set(\"phones\", phones);\r",
+							"\r",
+							"\r",
+							"\r",
+							"var Lat = pm.collectionVariables.get(\"Latitude\");\r",
+							"var Long = pm.collectionVariables.get(\"Longitude\");\r",
+							"var fullName = firstName + \" \" + lastName;\r",
+							"console.log(\"Set location of : \" + fleetId)\r",
+							"console.log(\"length of fleetIds : \" + Object.keys(pm.collectionVariables.get(\"fleetIds\")).length);\r",
+							"\r",
+							"\r",
+							"\r",
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"\t\t\"latitude\": Lat,\r",
+							"\t\t\"longitude\": Long,\r",
+							"\t\t\"fleetStatusId\": 5,\r",
+							"\t\t\"userName\": String(pm.collectionVariables.get(\"phone\")),\r",
+							"\t\t\"name\": String(fullName),\r",
+							"\t\t\"fleetId\": pm.collectionVariables.get(\"fleetId\"),\r",
+							"\t\t\"customerId\": pm.collectionVariables.get(\"customerId\"),\r",
+							"\t\t\"isPush\": true\r",
+							"\t}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (Object.keys(pm.collectionVariables.get(\"fleetIds\")).length != 0) {\r",
+							"\tpostman.setNextRequest(\"LocationGenerator\")\r",
+							"}\r",
+							"else {\r",
+							"\tif (Object.keys(pm.globals.get(\"PolygonIds\")).length != 0) {\r",
+							"\t\tsetTimeout(function () {\r",
+							"\t\t\tconsole.log(\"switch to next polygon\")\r",
+							"\t\t\tconsole.log(pm.globals.toObject())\r",
+							"\t\t}, 1000)\r",
+							"\t\tpostman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"\t}\r",
+							"\telse {\r",
+							"\t\tconsole.log(pm.collectionVariables.toObject())\r",
+							"\t\tvar _PolygonIds = pm.globals.get(\"_PolygonIds\")\r",
+							"\t\tpm.globals.set(\"PolygonIds\", _PolygonIds)\r",
+							"\t\tpm.globals.unset(\"PolygonId\")\r",
+							"\t\tpm.globals.unset(\"_PolygonIds\")\r",
+							"\t\tpostman.setNextRequest(null);\r",
+							"\t}\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{app}}/api/v1/Develop/SendDriverLocation",
+					"host": [
+						"{{app}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Develop",
+						"SendDriverLocation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://app.pctalent.ir/api/v1/Develop/SendDriverLocation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "host",
+								"value": "app.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjBSQVZQR1g3SE5UVFdXNDJDQzlYUlFTRE1PU0s3WFNMNzhCSUk3RTMiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI2ZTRlZGVhNy01ZjMzLTQ4M2EtYmE4Ny1lYmE1YmQ0ZjE4MTAiLCJuYW1lIjoiMDkxNjQwNzE0NDQiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJlMDYwNjk4Yy0yOWU0LTQ4NGEtODdhOS1iMTA4NWQ2ZjljYmYiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBvcGVuaWQgcHJvZmlsZSIsImV4cCI6MTY2NTgxOTcxMywiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjU4MTYxMTN9.uTfuv3p75viZzmtNFp8KZsidj0utXvwVVasVu2ExveEkSHMqdTCw9egUIHPWOrcXMB0B845K0e_6-nLrzFS2x3u7WGIdGoGIoz5R0Z91CH1qSb-gYnrCiKEMgOWsC49b4gfjK8SPkWz0m1_UDH1BghajaAwAcPyy-uc67uMEpSaHQt0Mrxotn8imma5Lx86-gOjNsJkpprZuTnXtT6Bg3-VDg3-wYKzo-NlZYGeduhLtWrYD-UW8D0bIQL7649Zv2OlE_nI5Ymywm7L-jNaRN8GaH8kF9Q7FXPBlptbS0YTwF-Aazxebau32bhCgLwNPifPyI9UBMZl8RpncTZEjAQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"latitude\": 0,\n  \"longitude\": 0,\n  \"shipmentIds\": [\n    0\n  ],\n  \"fleetStatusId\": 5,\n  \"userName\": \"string\",\n  \"name\": \"string\",\n  \"fleetId\": 0,\n  \"customerId\": 0,\n  \"isPush\": true\n}"
+						},
+						"url": {
+							"raw": "http://app.pctalent.ir/api/v1/Develop/SendDriverLocation",
+							"protocol": "http",
+							"host": [
+								"app",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Develop",
+								"SendDriverLocation"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PageIndex",
+			"value": ""
+		},
+		{
+			"key": "precision",
+			"value": ""
+		},
+		{
+			"key": "flag",
+			"value": ""
+		},
+		{
+			"key": "totalCount",
+			"value": ""
+		},
+		{
+			"key": "fleetIds",
+			"value": ""
+		},
+		{
+			"key": "customerIds",
+			"value": ""
+		},
+		{
+			"key": "firstNames",
+			"value": ""
+		},
+		{
+			"key": "lastNames",
+			"value": ""
+		},
+		{
+			"key": "phones",
+			"value": ""
+		},
+		{
+			"key": "Latitude",
+			"value": ""
+		},
+		{
+			"key": "Longitude",
+			"value": ""
+		},
+		{
+			"key": "fleetId",
+			"value": ""
+		},
+		{
+			"key": "customerId",
+			"value": ""
+		},
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "phone",
+			"value": ""
+		}
+	]
+}

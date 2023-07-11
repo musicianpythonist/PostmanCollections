@@ -1,0 +1,385 @@
+{
+	"info": {
+		"_postman_id": "319c7469-f025-463f-841e-f7087e76d8ce",
+		"name": "Okala",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "OkalaToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"\r",
+							"var token = response.data.token\r",
+							"pm.collectionVariables.set(\"okalaToken\", token)\r",
+							"\r",
+							"\r",
+							"var list = [53932108, 53934976, 53933608, 53933196, 53932702, 53932653, 53931834, 53934357, 53934054, 53933592, 53933960, 53933591, 53933152, 53932819, 53933041, 53930556, 53933621, 53932237, 53930313, 53933827, 53933495, 53935078, 53933525, 53933755, 53932971, 53932020, 53933631, 53933237, 53934576, 53933301, 53934526, 53932448, 53932509, 53933685, 53932248, 53933524, 53932845, 53934214, 53931730, 53932129, 53934750, 53930555, 53933808, 53930881, 53934504, 53935085, 53931092, 53934303, 53933645, 53931078, 53931402, 53930571, 53933965, 53933472, 53934380, 53934026, 53934198, 53933635, 53933656, 53934606, 53932456, 53934290, 53932324, 53930943, 53933394, 53933853, 53934370, 53933505, 53934114, 53931528, 53933874, 53932609, 53933596, 53933933, 53934253, 53932984, 53933131, 53932125, 53934098, 53929400, 53933549, 53933112, 53934130, 53932461, 53933673, 53932333, 53934104, 53933804, 53933034, 53933947, 53928401, 53934362, 53932495, 53932171, 53934059, 53932800, 53933819, 53934926, 53932092, 53931809, 53934009, 53932103, 53934898, 53931997, 53934129, 53933727, 53932407, 53933054, 53933880, 53933778, 53934190, 53931066, 53934544, 53933138, 53930700, 53932620, 53933788, 53932654, 53933839, 53934418, 53933010, 53933713, 53931651, 53932408, 53933613, 53932772, 53931869, 53932331, 53934749, 53933337, 53933775, 53932319, 53934122, 53930926, 53934038, 53933634, 53935177, 53934502, 53933332, 53933928, 53933867, 53932308, 53933035, 53934881, 53933560, 53932443, 53933854, 53933729, 53935112, 53933952, 53933045, 53933618, 53933562, 53932084, 53933796, 53932711, 53932849, 53934302, 53933448, 53933163, 53935180, 53934186, 53932481, 53934572, 53931687, 53934808, 53931760, 53934586, 53932423, 53933623, 53933654, 53933739, 53933459, 53934655, 53931725, 53931920, 53934178, 53934286, 53933134, 53934096, 53932841, 53934305, 53933585, 53935150, 53934429, 53934249, 53931526, 53931393, 53934704, 53934508, 53931244, 53931629, 53933809, 53932909, 53931178, 53917211, 53932100, 53932703, 53930560, 53931174, 53935099, 53931083, 53932073, 53932829, 53932667, 53933295, 53930473, 53934031, 53932036, 53931503, 53932017, 53935008, 53934960, 53934838, 53931982, 53930391, 53934660, 53932699, 53933938, 53932158, 53934703, 53933848, 53932565, 53931844, 53934076, 53934460, 53932432, 53934574, 53935227, 53935233, 53932952, 53934477, 53935208, 53933271, 53933527, 53934254, 53934110, 53930916, 53933129, 53933799, 53934486, 53932760, 53934585, 53932687, 53934367, 53931364, 53934233, 53931131, 53933093, 53935128, 53931990, 53934325, 53933748, 53933676, 53934343, 53934257, 53935224, 53933984, 53932806, 53933103, 53932965, 53931063, 53934608, 53931053, 53933700, 53935247, 53934797, 53932532, 53933404, 53928580, 53934210, 53933588, 53931391, 53933630, 53932802, 53933662, 53935021, 53933957, 53935215, 53933730, 53933417, 53933533, 53934422, 53933604, 53932322, 53934337, 53934166, 53934624, 53933126, 53931492, 53931246, 53933564, 53933043, 53935322, 53931337, 53933171, 53935229, 53933553, 53931358, 53932189, 53935167, 53932868, 53935145, 53935047, 53934064, 53934531, 53935192, 53931841, 53934430, 53934987, 53932549, 53930919, 53933106, 53931280, 53933992, 53933781, 53935226, 53934319, 53934133, 53932071, 53933504, 53933150, 53932972, 53934481, 53935363, 53933456, 53932428, 53934984, 53933355, 53933663, 53934066, 53935387, 53932159, 53932341, 53933887, 53935039, 53934807, 53933358, 53932638, 53935222, 53934049, 53935168, 53932746, 53931983, 53932623, 53933361, 53933179, 53932891, 53935368, 53933689, 53934069, 53933889, 53933974, 53921140, 53932050, 53933873, 53934720, 53934366, 53933946, 53935364, 53935297, 53935161, 53934022, 53934216, 53933399, 53935404, 53933159, 53932917, 53934351, 53935371, 53934448, 53933966, 53931692, 53932722, 53934714, 53935165, 53933331, 53932033, 53933606, 53934623, 53933614, 53932812, 53932941, 53935412, 53935053, 53933100, 53930732, 53935103, 53934402, 53934172, 53934365, 53933428, 53934316, 53929406, 53935171, 53934382, 53933007, 53933450, 53931890, 53933840, 53935065, 53934208, 53932517, 53935004, 53935424, 53932801, 53934675, 53935427, 53935431, 53935131, 53934671, 53934082, 53935220, 53933420, 53933154, 53932820, 53934523, 53934718, 53932393, 53935447, 53933090, 53935456, 53932676, 53934259, 53932864, 53935453, 53928616, 53931919, 53933208, 53931672, 53935091, 53933155, 53932871, 53934760, 53933388, 53933311, 53935477, 53934489, 53933087, 53933370, 53935473, 53934900, 53932554, 53935001, 53934280, 53934657, 53934464, 53934455, 53933467, 53935486, 53935434, 53933482, 53935443, 53933199, 53934519, 53932651, 53933948, 53932887, 53933183, 53935162, 53935352, 53933297, 53932670, 53932784, 53928996, 53934374, 53932898, 53932530, 53931942, 53933894, 53932896, 53934334, 53934353, 53932388, 53930995, 53932160, 53933202, 53935406, 53930857, 53933801, 53935479, 53935485, 53935211, 53935195, 53933299, 53931905, 53935455, 53934475, 53933671, 53881897, 53933194, 53931888, 53934087, 53933316, 53935507, 53931733, 53935084, 53932754, 53934771, 53934251, 53935498, 53927905, 53929966, 53933107, 53931446, 53933082, 53935351, 53935054, 53935552, 53935548, 53934019, 53932637, 53933603, 53935510, 53934137, 53935487, 53933982, 53933666, 53933121, 53933065, 53935551, 53933702, 53935490, 53924005, 53932674, 53933737, 53933954, 53935590, 53935601, 53935602, 53935560, 53876978, 53933529, 53935648, 53935634, 53935616, 53933828, 53935595, 53928551, 53935579, 53935564, 53935152, 53935656, 53933812, 53935544, 53933844, 53935645, 53935576, 53935657, 53935660, 53933768, 53935677, 53933872, 53933699, 53911881]\r",
+							"\r",
+							"pm.collectionVariables.set(\"list\", list)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"09123181638\",\r\n  \"password\": \"A123456@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/CA/CAAccount/Login",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"CA",
+						"CAAccount",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrderForHasti",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var list = pm.collectionVariables.get(\"list\")\r",
+							"var id = list.shift()\r",
+							"pm.collectionVariables.set(\"id\", id)\r",
+							"pm.collectionVariables.set(\"list\", list)\r",
+							"console.log(\"processing \" + String(id))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"\r",
+							"response.order.orderId = String(response.order.orderId)\r",
+							"response.order.storeId = String(response.order.storeId)\r",
+							"\r",
+							"_.each(response.orderItem, oi =>{\r",
+							"\toi.orderItemId = String(oi.orderItemId)\r",
+							"})\r",
+							"pm.collectionVariables.set(\"getOrderForHastiResponse\", JSON.stringify(response))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{okalaToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://okalaappsrv.gig.services/Checker/GetOrderForHasti/{{id}}",
+					"protocol": "https",
+					"host": [
+						"okalaappsrv",
+						"gig",
+						"services"
+					],
+					"path": [
+						"Checker",
+						"GetOrderForHasti",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerateHastiToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// pm.collectionVariables.set('hastiToken', 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjBBTFlFUUFPM1NUWFhRSDVfRFJTTlpXUlZCTFpTWksxV1Q3UUdNLTUiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJiNTUzMDQ2NS02MmZiLTQ5M2YtYmMyYi02MDY3ODFiZTYwMDQiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBwcm9maWxlIiwiZXhwIjoxNjg2MTQxNjI2LCJpc3MiOiJodHRwczovL2lkcC5oYXN0aS1zYWZpci5pci8iLCJpYXQiOjE2ODYxMjAwMjZ9.jxDjuXOW3YLO4iaWQw8yJ2ax9R6ZkV4qTrn2qp6ftnWr76yesLQ53c0seYJtEqy8Mu-1Rvpu0J7_obOe1mFORgeX8RnbwTXrp47JE0BSFsvM3nQ1BwS2A3QT_0k9WQlupo_t7btOYlZqKSDwPdth-IHUbXC0lLllHXJeY7uhjhMhL1HjXW66NM1oSJqre7Tl05NlWdtKhmX7gO559x7G29l0mzVZpUv-5oGR0U8HGaxw68ls2ruS6tv11TrlxkYJW3VZpCCHy4gHU3n1ZQCQG1YzOnzQdV6hxyTuqeTSilAS7jkUrTQmcqEv65lxmTEObUWZwkTs7eC7p3ySQ9WEqg')",
+							"",
+							"var response = pm.response.json()",
+							"",
+							"var hastiToken = response.access_token",
+							"pm.collectionVariables.set(\"hastiToken\", hastiToken)",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function (){",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=09125012541&password=12345678@aA&captcha_code=null&grant_type=password&client_id=angular&scope=hasti_api%20offline_access%20profile"
+				},
+				"url": {
+					"raw": "https://idp.hasti-safir.ir/connect/token",
+					"protocol": "https",
+					"host": [
+						"idp",
+						"hasti-safir",
+						"ir"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addOrder",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: pm.collectionVariables.get(\"getOrderForHastiResponse\"),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var list = pm.collectionVariables.get(\"list\")\r",
+							"if (list.length > 0) {\r",
+							"\tconsole.log(\"counter: \" + list.length)\r",
+							"\tpostman.setNextRequest(\"GetOrderForHasti\")\r",
+							"}\r",
+							"else{\r",
+							"\tconsole.log(\"all Done!\")\r",
+							"\tpm.collectionVariables.clear()\r",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function (){",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "host",
+						"value": "okala.hasti-safir.ir"
+					},
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{hastiToken}}"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://okala.hasti-safir.ir/api/v1/VendorAgent/AddOrder",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hasti-safir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"AddOrder"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "https://okala.hastisafir.ir/api/v1/VendorAgent/AddOrder",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "host",
+								"value": "okala.hastisafir.ir"
+							},
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\""
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IllHQkFKSEVTSjVSX1lDNkw3WEtLRkJNVllIUkEyUEJIRVA4SEpGQlEiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IkE1VlJHUkhINkI2T0pJTk8yWDRWTURXRTI2Uk1LNVpOIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJvaV9hdV9pZCI6ImU5MjI5OWFjLWU3MzYtNGM4ZS04OTBkLTU1NWY4MGQyN2Y0ZSIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJkM2Y3ZGI5ZC1kM2JjLTQ1YTctOGQwNi1mYjUzMmQ3OTkwNDUiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBvZmZsaW5lX2FjY2VzcyBwcm9maWxlIiwiZXhwIjoxNjc1NTkzMzM0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDAvIiwiaWF0IjoxNjc1NTc4OTM0fQ.HLB4rPa9HGKgDHij2-ocyow5__MmzUSkKk8IE-CiUARhcgOM4ifLJEqkyOx2e6NjTr7PVkb3YZMMZoQBXmfqGZmuQC8e6AR_wPiSejnkPiG6I5Mgg9lY4WiG__w8W_f5KCEL9k0pa13XrYSzigvq-xB386ZbXM58mhDoQBVqWVxSm9VzN-ElXFfRGfEdWZx6XmGNFChMZPDggoksq8Knp8Sx43a2peolsQtVpVtWrkwa7I6N_e-_bs4UGspvOuL3ME8T-yMfqf3VBZ288yhdcvx3soYXgE8Szbt0tKQdbomhheHaYLX8WA3qybgcnC76TMoA6WMLqWlPNMzUxjVoFA"
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"order\": {\n\t\t\"orderId\": 47636164,\n\t\t\"customOrderNumber\": \"23020545956254\",\n\t\t\"orderPartId\": 47016823,\n\t\t\"remain\": 0,\n\t\t\"invoiceValue\": 902000,\n\t\t\"storeId\": 4811,\n\t\t\"customerFirstName\": \"اسماعیل\",\n\t\t\"customerLastName\": \"شیر محمدی\",\n\t\t\"customerAddress\": \"کمربندی مدرس، فردوسی جنوبی، شهید شیرودی ارتش، فردوسی جنوبی ۱ دوستان\",\n\t\t\"customerMobile\": \"09379624059\",\n\t\t\"customerLat\": 37.464569,\n\t\t\"customerLng\": 57.312823,\n\t\t\"deliveryCode\": \"7661\",\n\t\t\"createdOn\": \"2/5/2023 9:36:29 AM\",\n\t\t\"createdOnTitle\": \"یکشنبه 1401/11/16 ساعت 2/5/2023 9:36:29 AM\",\n\t\t\"shippingStartTime\": \"1401/11/16 10:00\",\n\t\t\"shippingFinishTime\": \"1401/11/16 11:00\",\n\t\t\"shippingTypeCode\": 2,\n\t\t\"statusCode\": 42,\n\t\t\"storeName\": \"ژاله افق کوروش بجنورد\",\n\t\t\"plaque\": \"38\",\n\t\t\"unit\": \"2\",\n\t\t\"customerOrderName\": \"مهنانی\"\n\t},\n\t\"orderItem\": [\n\t\t{\n\t\t\t\"orderItemId\": 237991081,\n\t\t\t\"orderItemTitle\": \"پنیر نسبتا چرب 510گرمی روزانه\",\n\t\t\t\"orderItemCode\": 1999,\n\t\t\t\"count\": 1,\n\t\t\t\"orderItemPrice\": 549000\n\t\t},\n\t\t{\n\t\t\t\"orderItemId\": 237991082,\n\t\t\t\"orderItemTitle\": \"پنیر لبنه 350 گرمی کاله\",\n\t\t\t\"orderItemCode\": 2116,\n\t\t\t\"count\": 1,\n\t\t\t\"orderItemPrice\": 359000\n\t\t},\n\t\t{\n\t\t\t\"orderItemId\": 237991083,\n\t\t\t\"orderItemTitle\": \"ماست موسیر 250 گرمی رامک\",\n\t\t\t\"orderItemCode\": 8276,\n\t\t\t\"count\": 1,\n\t\t\t\"orderItemPrice\": 159000\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "https://okala.hastisafir.ir/api/v1/VendorAgent/AddOrder",
+							"protocol": "https",
+							"host": [
+								"okala",
+								"hastisafir",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"VendorAgent",
+								"AddOrder"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

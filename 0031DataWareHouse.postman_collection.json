@@ -1,0 +1,654 @@
+{
+	"info": {
+		"_postman_id": "a07855a8-e0ab-4293-b6a3-0ebd28a0c20e",
+		"name": "0031DataWareHouse",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{operationUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{operationPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetList",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const now = new Date()\r",
+							"const year = now.getFullYear()\r",
+							"const month = (now.getMonth() + 1).toString().padStart(2, '0')\r",
+							"const day = now.getDate().toString().padStart(2, '0')\r",
+							"\r",
+							"const startTime = `${year}${month}${day}000000000`\r",
+							"const endTime = `${year}${month}${day}235959999`\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    orderBy: '-createDate',\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"    fromDeliveryDate: startTime,\r",
+							"    toDeliveryDate: endTime,\r",
+							"    FromCreateRequestDate: startTime,\r",
+							"    ToCreateRequestDate: endTime\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{om}}/api/v1/CourierRequest/GetList",
+					"host": [
+						"{{om}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"CourierRequest",
+						"GetList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPagedModelListByFilter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var params = {\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/OperationStaff/GetPagedModelListByFilter",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"OperationStaff",
+						"GetPagedModelListByFilter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDispatchInfoListByFilter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const now = new Date()\r",
+							"const year = now.getFullYear()\r",
+							"const month = (now.getMonth() + 1).toString().padStart(2, '0')\r",
+							"const day = now.getDate().toString().padStart(2, '0')\r",
+							"\r",
+							"const startTime = `${year}${month}${day}000000000`\r",
+							"const endTime = `${year}${month}${day}235959999`\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    orderBy: '-createDate',\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"    StartDeliveryTime: startTime,\r",
+							"    EndDeliveryTime: endTime,\r",
+							"    IsReassignmentRequested: false,\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/GetDispatchInfoListByFilter",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"GetDispatchInfoListByFilter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTotalSystemPerformance",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const now = new Date()\r",
+							"const year = now.getFullYear()\r",
+							"const month = (now.getMonth() + 1).toString().padStart(2, '0')\r",
+							"const day = now.getDate().toString().padStart(2, '0')\r",
+							"\r",
+							"const startTime = `${year}${month}${day}000000000`\r",
+							"const endTime = `${year}${month}${day}235959999`\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    StartRangeTime: startTime,\r",
+							"    EndRangeTime: endTime,\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/GetTotalSystemPerformance",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"GetTotalSystemPerformance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTotalInvoices",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const now = new Date()\r",
+							"const year = now.getFullYear()\r",
+							"const month = (now.getMonth() + 1).toString().padStart(2, '0')\r",
+							"const day = now.getDate().toString().padStart(2, '0')\r",
+							"\r",
+							"const startTime = `${year}${month}${day}000000000`\r",
+							"const endTime = `${year}${month}${day}235959999`\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    orderBy: '-createDate',\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"    fromCreateRequestDate: startTime,\r",
+							"    toCreateRequestDate: endTime,\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{om}}/api/v1/Parcel/GetTotalInvoices",
+					"host": [
+						"{{om}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Parcel",
+						"GetTotalInvoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNotPickedUpPagedList",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var params = {\r",
+							"    orderBy: '-createDate',\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{om}}/api/v1/Parcel/GetNotPickedUpPagedList",
+					"host": [
+						"{{om}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Parcel",
+						"GetNotPickedUpPagedList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDailyRollCall",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var today = new Date();\r",
+							"var year = today.getFullYear();\r",
+							"var month = today.getMonth() + 1;\r",
+							"var day = today.getDate() - 1;\r",
+							"if (month < 10) {\r",
+							"  month = '0' + month;\r",
+							"}\r",
+							"if (day < 10) {\r",
+							"  day = '0' + day;\r",
+							"}\r",
+							"var RollCallDate = year + month + day\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"    RollCallDate: RollCallDate\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/GetDailyRollCall",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"GetDailyRollCall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFinalRequestsFleetPerformance",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const now = new Date()\r",
+							"const year = now.getFullYear()\r",
+							"const month = (now.getMonth() + 1).toString().padStart(2, '0')\r",
+							"const day = now.getDate().toString().padStart(2, '0')\r",
+							"\r",
+							"const startTime = `${year}${month}${day}000000000`\r",
+							"const endTime = `${year}${month}${day}235959999`\r",
+							"\r",
+							"\r",
+							"\r",
+							"var params = {\r",
+							"    pageIndex: 0,\r",
+							"    pageSize: 25,\r",
+							"    StartUpdateTime: startTime,\r",
+							"    EndUpdateTime: endTime,\r",
+							"\r",
+							"};\r",
+							"\r",
+							"var queryString = Object.keys(params).map(function (key) {\r",
+							"    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])\r",
+							"}).join('&');\r",
+							"\r",
+							"pm.request.addQueryParams(queryString)\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/GetFinalRequestsFleetPerformance",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"GetFinalRequestsFleetPerformance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

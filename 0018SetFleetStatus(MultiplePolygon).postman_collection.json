@@ -1,0 +1,631 @@
+{
+	"info": {
+		"_postman_id": "1fbcfba9-9e17-40de-a384-f989be29b7d2",
+		"name": "0018SetFleetStatus(MultiplePolygon)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken);\r",
+							"pm.collectionVariables.set(\"precision\", 1e3)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear();\r",
+							"\r",
+							"var polygonIds = pm.globals.get(\"PolygonIds\");\r",
+							"if (typeof polygonIds === \"string\") {\r",
+							"    polygonIds = polygonIds.match(/\\d+/g).map(Number);\r",
+							"}\r",
+							"\r",
+							"if (polygonIds.length !== 0) {\r",
+							"    var polygonId = polygonIds.shift();\r",
+							"    pm.globals.set(\"PolygonId\", polygonId);\r",
+							"    pm.globals.set(\"PolygonIds\", polygonIds);\r",
+							"\r",
+							"    if (!pm.globals.get(\"_PolygonIds\")) {\r",
+							"        var _polygonIds = [];\r",
+							"        _polygonIds.push(polygonId);\r",
+							"        pm.globals.set(\"_PolygonIds\", _polygonIds);\r",
+							"    } else {\r",
+							"        var _polygonIds = pm.globals.get(\"_PolygonIds\");\r",
+							"        _polygonIds.push(polygonId);\r",
+							"        pm.globals.set(\"_PolygonIds\", _polygonIds);\r",
+							"    }\r",
+							"} else {\r",
+							"    pm.globals.set(\"PolygonIds\", pm.globals.get(\"_PolygonIds\"));\r",
+							"    pm.globals.unset(\"PolygonId\");\r",
+							"    pm.globals.unset(\"_PolygonIds\");\r",
+							"    postman.setNextRequest(null);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{operationUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{operationPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDriverPagedList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var fleetMobiles = []\r",
+							"\r",
+							"for (i = 0; i < Object.keys(response.result).length; i++) {\r",
+							"\tfleetMobiles.push(response.result[i].mobile);\r",
+							"}\r",
+							"pm.collectionVariables.set(\"fleetMobiles\", fleetMobiles);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Fleet/GetDriverPagedList?PolygonId={{PolygonId}}&PageSize=1000",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Fleet",
+						"GetDriverPagedList"
+					],
+					"query": [
+						{
+							"key": "PolygonId",
+							"value": "{{PolygonId}}"
+						},
+						{
+							"key": "PageSize",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Fleet/GetDriverPagedList?PolygonId=115",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlNDTUMyWDhSMkgtSVJSRUhQSDFUWjZENkhVVTI4TkZGTUwyUE1HNEIiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiIyZjQxNGY5Yy0zMWY0LTQ0NzYtYjMzMi03N2Y3ZWIxYmU5YTUiLCJuYW1lIjoiMDkxMDQxNjIwNjIiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI0YzU3YzdkMy03OGEyLTRmZDgtYWNlNi1hM2JlYzU5Mzg1NzciLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NjEwMzg3OSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjYxMDAyNzl9.eemYqMuLHxreCV0lwFvB7KH8_PkMOa3OGgz670cKClIStdb0UZW-U2HZ6Tfn2dKhc4AD2UX2anpWLpoWlJyJGq5yiAqHnh2ezOPejZK1khdK0w6T2m14ngf8ZmYJOy2uPiFULovXNP2DMWKaou5Qxe0HBOrtbo8O3bgrQxoyKQS-Z_9dL-4O-22vtJJkYxw9OUEtBWV36FFfpUsJer3sQZaxMOagQRZSRfiuwEH5NicYn0ebuA9I2puLHoDyN5eC2-Avx_qGf23NPVvXVrc9PVhKvNCsboSmm-2peWtZu5UakbgQXUqe0apIYv-0ziW1YhHshBFehZx_NNcAq2sNjQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Fleet/GetDriverPagedList?PolygonId=115",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Fleet",
+								"GetDriverPagedList"
+							],
+							"query": [
+								{
+									"key": "PolygonId",
+									"value": "115"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "GenerateDriverToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"driverToken = JsonData.access_token\r",
+							"pm.environment.set(\"driverToken\", driverToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var fleetMobiles = pm.collectionVariables.get(\"fleetMobiles\")\r",
+							"var fleetMobile = fleetMobiles.shift()\r",
+							"pm.collectionVariables.set(\"fleetMobiles\", fleetMobiles)\r",
+							"pm.collectionVariables.set(\"fleetMobile\", fleetMobile)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{fleetMobile}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{fleetPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDriverCurrentTotalInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var fleetMobiles = pm.collectionVariables.get(\"fleetMobiles\")\r",
+							"\r",
+							"if (fleetMobiles.length > 0) {\r",
+							"    var response = pm.response.json()\r",
+							"\r",
+							"    if (response.fleet.statusId == 5) {\r",
+							"        postman.setNextRequest(\"GenerateDriverToken\")\r",
+							"    }\r",
+							"    else {\r",
+							"        postman.setNextRequest(\"LocationGenerator\")\r",
+							"    }\r",
+							"}\r",
+							"else {\r",
+							"    postman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{driverToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{app}}/api/v1/Driver/GetDriverCurrentTotalInfo",
+					"host": [
+						"{{app}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Driver",
+						"GetDriverCurrentTotalInfo"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://app.pctalent.ir/api/v1/Driver/GetDriverCurrentTotalInfo",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "app.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlpKRzlYNUxJRkNTUUJDVEtHRTdMX1BHRkRBTS1HTVg4R1RGMVRUVk4iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI1ZTc1OWYwZC0xYWJkLTQxYzktOWU0Ny1lNTdiNjkyZWI0ZDYiLCJuYW1lIjoiMDkxNjI4NzM1NDQiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJiZjQ3MjM0Mi1iYTIyLTQzNTYtOTYyNS1jYjExYmM5ZTVhZDIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBvcGVuaWQgcHJvZmlsZSIsImV4cCI6MTY2OTIwNTk1MywiaXNzIjoiaHR0cDovL2hvc3QuZG9ja2VyLmludGVybmFsOjgwODgvIiwiaWF0IjoxNjY5MjAyMzUzfQ.WMgtNFH2eHVtMPUdw3p-O8jJZy5Yu6pmWDkAhS5cFanJopstEtYuE5ulrXyAe98VhtDU4c_kKvQABKO_c892RLEgIxhR4GaNdi_u9xiqqS7jE1MgS0z3DZ60ecv0QHkkf6fJdSfu-w8fzVW4uGLANHymmFDpnz9FPxFtYSwSzrXDmTQrnI40R_5CEb6Yt961UsxLekfhMqKrskna_kTYeK-xTVShNBNxQpkztP3LDaVuH243B_2PvAF69O0BlcDtR7fU0iQe6c92kRmP5agzcvd6fdepyLNqXS-0ZA5LgGedXV5aLPdwa9cGuF0t9nYMsKLdFhJx8eyfbgt2McBFkw"
+							}
+						],
+						"url": {
+							"raw": "http://app.pctalent.ir/api/v1/Driver/GetDriverCurrentTotalInfo",
+							"protocol": "http",
+							"host": [
+								"app",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Driver",
+								"GetDriverCurrentTotalInfo"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "LocationGenerator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var latitude = 0,\r",
+							"    longitude = 0;\r",
+							"\r",
+							"for (i = 0; i < Object.keys(response.borderPoints).length; i++) {\r",
+							"    latitude += response.borderPoints[i].latitude;\r",
+							"    longitude += response.borderPoints[i].longitude;\r",
+							"}\r",
+							"var precision = pm.collectionVariables.get(\"precision\")\r",
+							"latitude = Math.random() / precision + latitude/Object.keys(response.borderPoints).length;\r",
+							"longitude = Math.random() / precision + longitude/Object.keys(response.borderPoints).length;\r",
+							"\r",
+							"pm.collectionVariables.set(\"latitude\", latitude);\r",
+							"pm.collectionVariables.set(\"longitude\", longitude);\r",
+							"\r",
+							"console.log(latitude, longitude)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetById/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetById",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI4ZjQ3MjMwMS02YWUzLTRlNWItODg3OC1iNDkwOTM5ZGFlYjIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSIsImV4cCI6MTY2NTMxOTAyMSwiaXNzIjoiaHR0cDovL2lkcC5wY3RhbGVudC5pci8iLCJpYXQiOjE2NjUzMTU0MjF9.Ov0MgfMEgbcHNYTtExap3PbkdE61C2Kdd8EUiAQ-gCnDO7ys3Uqlz04cDQmTz9RqtW6xT_llkTKWnlalgsSzC7YxQSWky76q9HKgs2t0jwofQOQD_ewF2zOURVTV1ghEtYMO32BB_j0x8hGpKGlo1Wm8ShPWvhN5XYvTe3dzUERtyVX1x7RuyMMkepmv1jbaNh7vXBIfTIv_g-x4Ny2zgFFSq7YpJHLGzPSVvJVc0F3BTA4WmFXflYPe2DStP8Z74PNZ9LSGgdJBZsgSIKqQ35g51NUVdI6tGQWEWWiUTZ9UNB3D9Hyklk0yuZWE75FMEhq5O2TS2tAQabXONACRcQ"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetById/103",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetById",
+								"103"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "ChangeCurrentFleetStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var fleetMobiles = pm.collectionVariables.get(\"fleetMobiles\")\r",
+							"\r",
+							"console.log(pm.collectionVariables.get(\"fleetMobile\").length);\r",
+							"\r",
+							"if (fleetMobiles.length > 0) {\r",
+							"    postman.setNextRequest(\"GenerateDriverToken\")\r",
+							"}\r",
+							"else {\r",
+							"    postman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"    pm.collectionVariables.clear()\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"\t\t\"latitude\": pm.collectionVariables.get(\"latitude\"),\r",
+							"\t\t\"longitude\": pm.collectionVariables.get(\"longitude\"),\r",
+							"\t\t\"fleetStatusId\": 5\r",
+							"\t}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"pm.request.body.update(body);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{driverToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{app}}/api/v1/Driver/ChangeCurrentFleetStatus",
+					"host": [
+						"{{app}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Driver",
+						"ChangeCurrentFleetStatus"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "precision",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,574 @@
+{
+	"info": {
+		"_postman_id": "e0773a22-15f1-4ea5-a095-e13b37310368",
+		"name": "0022AssignByOperation(MultiplePolygon)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "GenerateOperatoinToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var JsonData = pm.response.json();\r",
+							"operationToken = JsonData.access_token\r",
+							"pm.environment.set(\"operationToken\", operationToken);\r",
+							"pm.collectionVariables.set(\"selectedFleets\", [])\r",
+							"pm.collectionVariables.set(\"precision\", 1e3)\r",
+							"pm.collectionVariables.set(\"actualPathPointsCount\", 3)\r",
+							"pm.collectionVariables.set(\"shipmentIds\", [])"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.clear()\r",
+							"\r",
+							"if (typeof (pm.globals.get(\"PolygonIds\")) == \"string\") {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\")).match(/\\d+/g).map(Number)\r",
+							"}\r",
+							"else {\r",
+							"\tvar polygonIds = (pm.globals.get(\"PolygonIds\"))\r",
+							"}\r",
+							"\r",
+							"\r",
+							"if (polygonIds.length != 0) {\r",
+							"\tvar polygonId = polygonIds.shift()\r",
+							"\tpm.globals.set(\"PolygonId\", polygonId)\r",
+							"\tpm.globals.set(\"PolygonIds\", polygonIds)\r",
+							"\tif (!pm.globals.get(\"_PolygonIds\")) {\r",
+							"\t\tpm.globals.set(\"_PolygonIds\")\r",
+							"\t\tvar _polygonIds = []\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"\telse {\r",
+							"\t\tvar _polygonIds = pm.globals.get(\"_PolygonIds\")\r",
+							"\t\t_polygonIds.push(polygonId)\r",
+							"\t\tpm.globals.set(\"_PolygonIds\", _polygonIds)\r",
+							"\t}\r",
+							"}\r",
+							"else {\r",
+							"\tpm.globals.set(\"PolygonIds\", pm.globals.get(\"_PolygonIds\"))\r",
+							"\tpm.globals.unset(\"PolygonId\")\r",
+							"\tpm.globals.unset(\"_PolygonIds\")\r",
+							"\tpostman.setNextRequest(null)\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{operationUserName}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{operationPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api openid profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp}}/connect/token",
+					"host": [
+						"{{idp}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUnassignedListByPolygon",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"var storeIds = []\r",
+							"var temp = []\r",
+							"\r",
+							"if (response.dispatchRequests.length != 0) {\r",
+							"\t_.each(response.dispatchRequests, dr => {\r",
+							"\t\tif (storeIds.includes(dr.storeId)) {\r",
+							"\t\t}\r",
+							"\t\telse {\r",
+							"\t\t\tstoreIds.push(dr.storeId)\r",
+							"\r",
+							"\t\t}\r",
+							"\t})\r",
+							"\tpm.collectionVariables.set(\"storeIds\", storeIds)\r",
+							"\t_.each(storeIds, si => {\r",
+							"\t\t_.each(response.dispatchRequests, dr => {\r",
+							"\t\t\tif (dr.storeId == si) {\r",
+							"\t\t\t\ttemp.push({\r",
+							"\t\t\t\t\tdispatchRequestId: dr.id,\r",
+							"\t\t\t\t\tdispatchRequestStatusId: dr.dispatchRequestStatusId,\r",
+							"\t\t\t\t\tparcelReferenceCode: dr.parcelReferenceCode,\r",
+							"\t\t\t\t\tcourierRequestTypeId: dr.courierRequestTypeId,\r",
+							"\t\t\t\t\tvendorParcelCode: dr.vendorParcelCode,\r",
+							"\t\t\t\t\tstoreLocation: dr.storeLocation,\r",
+							"\t\t\t\t\tclientLocation: dr.clientLocation\r",
+							"\t\t\t\t})\r",
+							"\t\t\t}\r",
+							"\t\t})\r",
+							"\t\tpm.collectionVariables.set(si, JSON.stringify(temp))\r",
+							"\t\ttemp = []\r",
+							"\t})\r",
+							"}\r",
+							"else {\r",
+							"\tconsole.log(\"there is no unassign dispatchRequest for polygonId: \" + String(pm.globals.get(\"PolygonId\")))\r",
+							"\tpostman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/GetUnassignedListByFilter?PolygonIds={{PolygonId}}&PageSize=1000",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"GetUnassignedListByFilter"
+					],
+					"query": [
+						{
+							"key": "PolygonIds",
+							"value": "{{PolygonId}}"
+						},
+						{
+							"key": "PageSize",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/DispatchRequest/GetUnassignedListByFilter?ProvinceId=26&CityId=966&StartDeliveryTime=20220924000000000&EndDeliveryTime=20220924235959999&PolygonIds=115",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IldLT09aVjRLS1M2TVlFVUZLMzU2RU1WUDNUME01SlNOS1M4WlJNUkwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsIm9pX2F1X2lkIjoiMzEyNzQ1MTAtMjBlNi00M2U1LWFlZWUtZTc4ZDgxY2Q2OTQzIiwiY2xpZW50X2lkIjoiYW5ndWxhciIsIm9pX3Rrbl9pZCI6Ijg4Yzc1OTM1LTI4ZDYtNDA0Yi1hYjljLTEyYWZkMDQ2MWI3YiIsImF1ZCI6Imhhc3RpX3NlcnZlciIsInNjb3BlIjoiaGFzdGlfYXBpIG9mZmxpbmVfYWNjZXNzIHByb2ZpbGUiLCJleHAiOjE2NjQwMDAwNTQsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwiaWF0IjoxNjYzOTk2NDU0fQ.UbNtio7da7IO0A0EdscoXqzZX7clkKD93M-O9kUb4ErJ5ka6kpFR52hedO6J6ioKr1raRQG6X81B3gmhVd65ovYwZP_riMHZlo0XXsK3wEd01RJ-HD-6HuHeziZWVPchC9lkA92tRtEayTjrzupJzcqgKzVhyOCkJJxtuoq5L1V9Ye8gkcN-HLddq09bdS84vtNGHjPFLugH_RPTu39ZP0MS9RfJvNIbIyUgIEqNJAemytfLPUzvVDal2hu-bXAr7SkzrDYA-JVXTCbkLLRcyPvXqUtVXcSNsASDjAf9RKI732eAQVRGiLZ42CQqY1jcpDlatu2GVM3lIYt3sYW0Wg"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/DispatchRequest/GetUnassignedListByFilter?ProvinceId=26&CityId=966&StartDeliveryTime=20220924000000000&EndDeliveryTime=20220924235959999&PolygonIds=115",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"DispatchRequest",
+								"GetUnassignedListByFilter"
+							],
+							"query": [
+								{
+									"key": "ProvinceId",
+									"value": "26"
+								},
+								{
+									"key": "CityId",
+									"value": "966"
+								},
+								{
+									"key": "StartDeliveryTime",
+									"value": "20220924000000000"
+								},
+								{
+									"key": "EndDeliveryTime",
+									"value": "20220924235959999"
+								},
+								{
+									"key": "PolygonIds",
+									"value": "115"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "GetOnlineFleetList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json()\r",
+							"var onlineFleetIds = []\r",
+							"\r",
+							"_.each(response, fl => {\r",
+							"\tif (fl.fleetStatusId == 5) {\r",
+							"\t\tonlineFleetIds.push(fl.fleetId)\r",
+							"\t}\r",
+							"})\r",
+							"if (onlineFleetIds.length == 0) {\r",
+							"\tconsole.log(\"there is no any ready fleet for selected polygon\")\r",
+							"}\r",
+							"pm.collectionVariables.set(\"onlineFleetIds\", onlineFleetIds);\r",
+							"console.log(\"online FleetIds : \" + pm.collectionVariables.get(\"onlineFleetIds\"));\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{dp}}/api/v1/Polygon/GetOnlineFleetList/{{PolygonId}}",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Polygon",
+						"GetOnlineFleetList",
+						"{{PolygonId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/Polygon/GetOnlineFleetList/52",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwib2lfYXVfaWQiOiJkM2ZhZjE4Ni1kMjZmLTRjZTktYmI1My1lZGZjZWNjZTY3MWMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiMjc2ZTVmYmItNjc3OC00MjMzLWFjYzAtNDBiNDI5NWI2MjExIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb2ZmbGluZV9hY2Nlc3MgcHJvZmlsZSIsImV4cCI6MTY2NTMyNTExNSwiaWF0IjoxNjY1MzIxNTE1fQ.P10ZXAZd0fhHq_cgRHkw7yfp3RmkumqJcSfr7qOyobD2_0y4kizwnyAV42_vYG36rIGnfWpe-HhwaLHjJoICn8zQIzV0OBpDoOYTI8gfDMeBA1Ei36A28pPAzpTn8_dd68_VQim0CGDdEZir8_TLJhQmJtSiZycIDqEJZVTbXYLXIIvPpXb3Hq2kJHE2A6gHyT4ySW-rkNG63XRIPm-bE_zWoPGlklehp41fg7Y8kjAG4PvpDFGs1_yKIq7GWJiYKbVx37TS5zxZshq60IzT8NtzDBSU3rlbU0yROG0rlWSeTA_kIogKcz3-bkjZzDPBG2gJuwxSYE4pyOTqGpwr-Q"
+							}
+						],
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/Polygon/GetOnlineFleetList/52",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Polygon",
+								"GetOnlineFleetList",
+								"52"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "AssignByOperation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var onlineFleetIds = pm.collectionVariables.get(\"onlineFleetIds\")\r",
+							"var storeIds = pm.collectionVariables.get(\"storeIds\")\r",
+							"var dispatchRequestIds = []\r",
+							"\r",
+							"\r",
+							"var fleetId = onlineFleetIds.shift()\r",
+							"var storeId = storeIds.shift()\r",
+							"pm.collectionVariables.set(\"onlineFleetIds\", onlineFleetIds)\r",
+							"pm.collectionVariables.set(\"storeIds\", storeIds)\r",
+							"\r",
+							"var dispatchesPerStore = JSON.parse(pm.collectionVariables.get(storeId))\r",
+							"_.each(dispatchesPerStore, dps => {\r",
+							"\tdispatchRequestIds.push(dps.dispatchRequestId)\r",
+							"})\r",
+							"\r",
+							"var body = {\r",
+							"\tmode: 'raw',\r",
+							"\traw: JSON.stringify({\r",
+							"\t\t\"fleetId\": fleetId,\r",
+							"\t\t\"dispatchRequestId\": dispatchRequestIds\r",
+							"\t}),\r",
+							"\toptions: {\r",
+							"\t\traw: {\r",
+							"\t\t\tlanguage: \"JSON\"\r",
+							"\t\t}\r",
+							"\t}\r",
+							"}\r",
+							"\r",
+							"pm.request.body.update(body);\r",
+							"var selectedFleets = pm.collectionVariables.get(\"selectedFleets\")\r",
+							"selectedFleets.push(fleetId)\r",
+							"pm.collectionVariables.set(\"selectedFleets\", selectedFleets)\r",
+							"pm.collectionVariables.unset(storeId)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var fleetIds = pm.collectionVariables.get(\"onlineFleetIds\");\r",
+							"var storeIds = pm.collectionVariables.get(\"storeIds\")\r",
+							"\r",
+							"if (Object.keys(storeIds).length > 0){\r",
+							"\tpostman.setNextRequest(\"AssignByOperation\")\r",
+							"}\r",
+							"else{\r",
+							"\tpm.collectionVariables.unset(\"storeIds\")\r",
+							"\tpm.collectionVariables.unset(\"onlineFleetIds\")\r",
+							"\tpostman.setNextRequest(\"GenerateOperatoinToken\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{operationToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{dp}}/api/v1/DispatchRequest/AssignByOperation",
+					"host": [
+						"{{dp}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"DispatchRequest",
+						"AssignByOperation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://dp.pctalent.ir/api/v1/DispatchRequest/AssignByOperation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "host",
+								"value": "dp.pctalent.ir"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhLRk1YT0tYRzBSTkRRWlZHR09PSFlVUjFETUI0T0IxQ1haS0RURU0iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OTNjYjhjZi05MmFjLTQ4MjktODJhYy0xZjFhNWExMmYwZDYiLCJuYW1lIjoiMDkxMjM0NTY3OTkiLCJvaV9wcnN0IjoiYW5ndWxhciIsImlzcyI6Imh0dHA6Ly9pZHAucGN0YWxlbnQuaXIvIiwib2lfYXVfaWQiOiJkM2ZhZjE4Ni1kMjZmLTRjZTktYmI1My1lZGZjZWNjZTY3MWMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiMjc2ZTVmYmItNjc3OC00MjMzLWFjYzAtNDBiNDI5NWI2MjExIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb2ZmbGluZV9hY2Nlc3MgcHJvZmlsZSIsImV4cCI6MTY2NTMyNTExNSwiaWF0IjoxNjY1MzIxNTE1fQ.P10ZXAZd0fhHq_cgRHkw7yfp3RmkumqJcSfr7qOyobD2_0y4kizwnyAV42_vYG36rIGnfWpe-HhwaLHjJoICn8zQIzV0OBpDoOYTI8gfDMeBA1Ei36A28pPAzpTn8_dd68_VQim0CGDdEZir8_TLJhQmJtSiZycIDqEJZVTbXYLXIIvPpXb3Hq2kJHE2A6gHyT4ySW-rkNG63XRIPm-bE_zWoPGlklehp41fg7Y8kjAG4PvpDFGs1_yKIq7GWJiYKbVx37TS5zxZshq60IzT8NtzDBSU3rlbU0yROG0rlWSeTA_kIogKcz3-bkjZzDPBG2gJuwxSYE4pyOTqGpwr-Q"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fleetId\":1347,\"dispatchRequestId\":[28758]}"
+						},
+						"url": {
+							"raw": "http://dp.pctalent.ir/api/v1/DispatchRequest/AssignByOperation",
+							"protocol": "http",
+							"host": [
+								"dp",
+								"pctalent",
+								"ir"
+							],
+							"path": [
+								"api",
+								"v1",
+								"DispatchRequest",
+								"AssignByOperation"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "selectedFleets",
+			"value": ""
+		},
+		{
+			"key": "precision",
+			"value": ""
+		},
+		{
+			"key": "actualPathPointsCount",
+			"value": ""
+		},
+		{
+			"key": "shipmentIds",
+			"value": ""
+		}
+	]
+}

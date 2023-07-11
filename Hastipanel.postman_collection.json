@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "7783bc0c-1933-41ff-a22d-7b604db48ace",
+		"name": "Hastipanel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26364101"
+	},
+	"item": [
+		{
+			"name": "hasti_token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlVLVjYzV0ZVR1RVUVRDNlVLSUNOSUVYVUdMQTVJWFdSSlZIT1RfNkMiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiJGODQxMjkyMC1DOEE4LTRDRUYtOEY4Mi0wM0Q0NjI4REFFMjgiLCJuYW1lIjoiSGFzdGkiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJoZXlkYXJpLmFtaXJAS291cm9zaEZydWl0LmNvbSIsIm9pX3Byc3QiOiJhbmd1bGFyIiwiY2xpZW50X2lkIjoiYW5ndWxhciIsIm9pX3Rrbl9pZCI6IjhmNDZkZTgxLWQ2YzAtNDI5Yi1hYzJkLTNjYTRjMzdkZmU3YSIsImF1ZCI6Imhhc3RpX3NlcnZlciIsInNjb3BlIjoiaGFzdGlfYXBpIG9wZW5pZCBwcm9maWxlIiwiZXhwIjoxNjM4MDkyNTczLCJpc3MiOiJodHRwOi8vY3NpZHAuc2FtYW5wcm8uaXIvIiwiaWF0IjoxNjM4MDg4OTczfQ.oCn9HKy5Ft8cBZKUePQwiMRuQRfwV6w2Ifuhnteu5wdNfNg5jnHWVybVrBysFLkjrcoQOS9i6fKiYrl6hdCapdahXmRmHUCU2kYGpPjkQ_iP6FPvRP_-5oQvxWqxuMKL3hNtpjdUkReqzmTLb1lgRidMQTp-TT5NN-Om3lbXqyi7NROauBBQ-B74t4WkTSyngZf0NHRm9dZxbnreGtxO12XEV2UwIkvSuLt3zm-iMMYm67xrJm3scI9hN9qlIdgsO_V22TZ0JAGjLzassUeIxNcl3haZmTJhS3WXiv4RQTFIDBPUjyJX760PPwZr92C5ugFAX0OND0aCxiTw7uC3wA",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "09125012541",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678@aA",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "angular",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "hasti_api profile",
+							"type": "text"
+						},
+						{
+							"key": "captcha_code",
+							"value": "7ggmp3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://idp.hasti-safir.ir/connect/token",
+					"protocol": "https",
+					"host": [
+						"idp",
+						"hasti-safir",
+						"ir"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hasti_PushInvoice",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlVYUVJUX0RTQzRFNFRCWlZKSVJDQi1KWEJJM0JKRFJWV1IxQ0lNWk4iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI3NzllMjJiMy0zZWRmLTRhN2YtYmQyNC0zM2VlOWNlNDg1YzAiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBwcm9maWxlIiwiZXhwIjoxNjc2Nzk1MzgzLCJpc3MiOiJodHRwOi8vaGFzdGktb3BlbmlkZGljdC5wcm9kdWN0aW9uLnN2Yy5jbHVzdGVyLmxvY2FsLyIsImlhdCI6MTY3Njc5MTc4M30.InLbgDkkvOsPUZksDYjqYf8KizlRoYciT5ZAKfh8TpVrFrhLS0cK8ZZDfuFHO2fTm4XDL-7HfVSiRC3mryQt2tdJNq0CWYB0Lv-VQ90bzl8lM93I2vcKFcEmKA8p5Bx7JnU75mvjO1v3UgpoF16ia2b3yygtRxZvzWKMxy1xBJBNU-z_1iiA3Owbk-C2ikFwQK4a_-8LIjWjXFuyE7Q96zYLUEjrKFmmY5HtANjKBiOY1JELxZGpiM7N5jUZ_961tiSnNBLY23qzTT65BwokMYYq5uvDJ7CZNb8spTgGQZ1-joSZczwC5ITvHJEaBEFpHa308L0YXF8NdvpXQPTZ2g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhZODRaWllMMEJNOVlYSjJPUUwzUS1aTUROVUJDR1pVVlZFSVRPMkwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IldJQlZXVDJGUVVZSkozUVRVWE4yNFpZNFdaSURHV1ZaIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNTM2YmY3MzMtMDdhZi00MDBkLWFkYjgtZjJiMmQ1ZWE4NjFiIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1MTQxOTk0MSwiaXNzIjoiaHR0cDovL2NzaWRwLmhhc3RpcGFuZWwuaXIvIiwiaWF0IjoxNjUxNDE2MzQxfQ.xn2xGzRha_LR6UI8FCTFL2FYpfJ95wFsv9QNKmxpGJ39mNjmdoB_kQBI9oPbPMNyvp2NspKcnXKFHpscJPov8BVe42g7NuAEvh_KnlozyRFhW95Qzssk9wRYekQgLvCIe5vPU2Hc23fRMsi8KSwNs957i0olWtChaDS-_38lKq5B04x0fDdtKbrHdkSI2vQuCTz1hBdxnr-_41bGO3hXHq_GZdJL5z7virhUfUU6dF7d2qRcpM-eTP8MBGaR-meeHMxPA0d4YBSohVwOK7PUtC3AaRH9KZotTThwPEy0xLPu5G3Q3cgtSS3naS1RPcCfqKyi4x3RRg7yyi6Xrc69Rg"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"invoice_no\":\"42304089\",\n  \"status_code\": 42\n}"
+				},
+				"url": {
+					"raw": "https://okala.hasti-safir.ir/api/v1/VendorAgent/PushInvoice",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hasti-safir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"PushInvoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hasti_ReturnOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlRLMERaVFJGTUJGSk9PVzJXTEFUVDhIUFpESkNKWElFN1U4RUdQSFgiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiI3ZTBlMWI2Yi0yNjc4LTQ1MGItYWIzOC1lZmVkYTgzY2E3NTgiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBwcm9maWxlIiwiZXhwIjoxNjc3MzE3MzkxLCJpc3MiOiJodHRwOi8vaGFzdGktb3BlbmlkZGljdC5wcm9kdWN0aW9uLnN2Yy5jbHVzdGVyLmxvY2FsLyIsImlhdCI6MTY3NzMxMzc5MX0.ZqZD3DG489-AC2Gp0kmT29zgpdsOIEg4UtM9jfVT7Vd1YQNuZU0oGWtYGwdAVLZTc6dLWDdJ-VnA09L7_7pzIA21Sus4BTEgO1ZBWl-nNS2bnJif3h0BvcwZ_XSTNAqLNbyY4WMz-g0RiW38MoMfCnrqWVXWQKTB2NrbBIY772YW-LDrjNk5zJnxelsXoqfjQ56MaKO9oXb9zAAVSClWonq44tZdBMih5uph1tmudnSr9AOaqu2KasnszfoZQTA50oUERqQhbHidNPRiZ6y29a13VYF9VexNn1kVYRAPl9E6eeaAPoXl7RJ4nMFttRrnUKwBNyUAfRaHC9uAhYzBUw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhZODRaWllMMEJNOVlYSjJPUUwzUS1aTUROVUJDR1pVVlZFSVRPMkwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IldJQlZXVDJGUVVZSkozUVRVWE4yNFpZNFdaSURHV1ZaIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNTM2YmY3MzMtMDdhZi00MDBkLWFkYjgtZjJiMmQ1ZWE4NjFiIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1MTQxOTk0MSwiaXNzIjoiaHR0cDovL2NzaWRwLmhhc3RpcGFuZWwuaXIvIiwiaWF0IjoxNjUxNDE2MzQxfQ.xn2xGzRha_LR6UI8FCTFL2FYpfJ95wFsv9QNKmxpGJ39mNjmdoB_kQBI9oPbPMNyvp2NspKcnXKFHpscJPov8BVe42g7NuAEvh_KnlozyRFhW95Qzssk9wRYekQgLvCIe5vPU2Hc23fRMsi8KSwNs957i0olWtChaDS-_38lKq5B04x0fDdtKbrHdkSI2vQuCTz1hBdxnr-_41bGO3hXHq_GZdJL5z7virhUfUU6dF7d2qRcpM-eTP8MBGaR-meeHMxPA0d4YBSohVwOK7PUtC3AaRH9KZotTThwPEy0xLPu5G3Q3cgtSS3naS1RPcCfqKyi4x3RRg7yyi6Xrc69Rg"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"order_id\": 0,\n  \"order_part_id\": 0,\n  \"status\": \"string\"\n}"
+				},
+				"url": {
+					"raw": "https://okala.hastisafir.ir/api/v1/VendorAgent/ReturnOrder",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hastisafir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"ReturnOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IllXUjdXNFpDSjhSNE8zMVdJREFRTlZSV1BJS09LWVdXS0tBTUNLVEwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6Ik5LWFhIRUVTN1dWU0tWSDVNVTRYNkdGRE81WVJYQUI0Iiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiZDlhZTJhMWUtNWM3MS00ZWRiLWFmMmUtMzA4MDljYmYwODE4IiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgb3BlbmlkIHByb2ZpbGUiLCJleHAiOjE2NTI2MDYyMzgsImlzcyI6Imh0dHA6Ly9jc2lkcC5oYXN0aXBhbmVsLmlyLyIsImlhdCI6MTY1MjYwMjYzOH0.nf6AhFH32VLykWmLugk6R3Uvh8ypAPzvytXYAL8rUJ9kg7ENb6_9u7ZWTfoTVzbvlmMp6Yc_7kaIPHAKoFc8XnfEPAcwVpq8Fqo7gs4ZhERkDnWxM8C2yKOIf7uO43ZO9lrksqvDktCRzVZp4Ju9SWLYBXHKJb5SQB9jA5TAugQ0gBfqyMEXsvoMjd6qgH1K_dZCC9DIyh8AAq6qETjmL__Yo3y9LDHIpVl1-CoWj7suP-nYYsexBJ2CP3_Fg87Hhilw7FV9_xbZwFQ2Vtipr7BGAz80gYkgHIIMMqe-FBs_7oXyUoeBZsO8hauN-grZWBX13mHJQMXC66vkeYoZ9A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"order_Id\": 0,\r\n  \"order_Part_Id\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://okala.hastipanel.ir/api/v1/VendorAgent/CancelOrder",
+					"protocol": "http",
+					"host": [
+						"okala",
+						"hastipanel",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"CancelOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReturnOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhKTFBITklMQ1FKUDVYX0lVWU1TTElEUTBNUFRDRFRKWk5BWURQSDAiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IklDVlM1Q1ZJQ0kzQjNBQU9QTVpBQ0YyNjJCQ1pYWElLIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNzJlYWExMjctYTFjMi00MGZiLTk5YWUtOWY2MTljY2IxYjMwIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1NTM4OTQxOCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo3MDAwLyIsImlhdCI6MTY1NTM4NTgxOH0.bt8WRFXD5bFyiSQLqiwj-TzNinOfLKNi6plZxm2ve5JBQ-vfSOPyrfsactd5i8a0cDsMx5aNu4wcojcJMOlxbG5z7V7qC7GrHbfHIwheJL2d0BvTzZStKALCy1wXX9R0PZzw70u1N8eYb6eDSvv_PK5TEwMPH9hzNRU38Yf8SYsxHH1ae5xCvpfNgiEq7VbFC_dVKJVf5WH-5SUWa9vzYVhyV3bS9CWTBf3_q7f0tQxxunrsTAoBGFQovd0yvU16GyMVQIoMHEmH5Ld9mkcHzmx6j8LtHUaEdOSo1Q61qDnMk_dzNl2Q6zqTdRksJcsJ-UcfeWHJ6wy8AfPcdV7t3w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"order_id\": 39268010,\r\n  \"order_part_id\":38760421,\r\n  \"status\": \"بکیان\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okala.hastisafir.ir/api/v1/VendorAgent/ReturnOrder",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hastisafir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"ReturnOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hasti_confirmReturnOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlVCOU1FWFZPX0NCQldGQkpaVlpONFpKR0hLODVNLVRFVUtCWEZHVU4iLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IldKN1VOWTRYVkQ2V0EzN1pDNVVXQ0NSQVdWRFZLNlFPIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNWJmYjRhOGUtOWQwNy00ZWFiLWE1ZTItNGI3YjM4ZDg3ZjJmIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1MjI5MTQzOSwiaXNzIjoiaHR0cDovL2NzaWRwLmhhc3RpcGFuZWwuaXIvIiwiaWF0IjoxNjUyMjg3ODM5fQ.IF5JeLpOVDRGY2tWJ1PYkWy07uPvPt9ExEBD6T1vaSR2IjGOzwnzh5k-ZG9FS2DqUgduErRrB1rlNf5yfIi9kKlbvb8O2cTDZvIBJT4kKCkqJE71UYndyry4wX9xlk3LhaTkOjdgIxnboCAscE-Y0KFon1gueNwBOgpAakZF4eoUiAhtnypBJlZ87vqbtg4tK-O0oH84p-CvEvAsBe9XBURJj421gI5F1yHfHXlzqWcGQdZavMSSekDYlwfCD1fNx7zOjNYirYVGJ8YuTiNngAPqi1FkpS9gtvxU7LLV0_dx6zY0ilhcetTIOexBFQf345lU5CXmwyEjxS9B20YFPw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlhZODRaWllMMEJNOVlYSjJPUUwzUS1aTUROVUJDR1pVVlZFSVRPMkwiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IldJQlZXVDJGUVVZSkozUVRVWE4yNFpZNFdaSURHV1ZaIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiNTM2YmY3MzMtMDdhZi00MDBkLWFkYjgtZjJiMmQ1ZWE4NjFiIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1MTQxOTk0MSwiaXNzIjoiaHR0cDovL2NzaWRwLmhhc3RpcGFuZWwuaXIvIiwiaWF0IjoxNjUxNDE2MzQxfQ.xn2xGzRha_LR6UI8FCTFL2FYpfJ95wFsv9QNKmxpGJ39mNjmdoB_kQBI9oPbPMNyvp2NspKcnXKFHpscJPov8BVe42g7NuAEvh_KnlozyRFhW95Qzssk9wRYekQgLvCIe5vPU2Hc23fRMsi8KSwNs957i0olWtChaDS-_38lKq5B04x0fDdtKbrHdkSI2vQuCTz1hBdxnr-_41bGO3hXHq_GZdJL5z7virhUfUU6dF7d2qRcpM-eTP8MBGaR-meeHMxPA0d4YBSohVwOK7PUtC3AaRH9KZotTThwPEy0xLPu5G3Q3cgtSS3naS1RPcCfqKyi4x3RRg7yyi6Xrc69Rg"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"order_id\": 37757815,\n  \"order_part_id\": 37296673,\n\n}"
+				},
+				"url": {
+					"raw": "http://okala.hastisafir.ir/api/v1/VendorAgent/confirmReturnOrder",
+					"protocol": "http",
+					"host": [
+						"okala",
+						"hastisafir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"confirmReturnOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RejectReturnOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZRNFpYS0ZLQUEzLU5HNVJVWks1SklZWFZNSlQ3X1lfQk9RU0NVMlUiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5OEY2QTE3QS1BQzcyLTRDOTQtOEI0OS01MUFGRjlCRTg5RkIiLCJuYW1lIjoiMDkxMjUwMTI1NDEiLCJzZWN1cml0eV9zdGFtcCI6IkxORkROTk5IVklVQTdIQlNZREI0TjJMTktYSklZU1BJIiwib2lfcHJzdCI6ImFuZ3VsYXIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwib2lfdGtuX2lkIjoiMTgxYjJjMTYtNWU1Yi00OWIyLThlZmQtMDgwYjY2OTA2MWJlIiwiYXVkIjoiaGFzdGlfc2VydmVyIiwic2NvcGUiOiJoYXN0aV9hcGkgcHJvZmlsZSIsImV4cCI6MTY1NTEwOTYzMCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo3MDAwLyIsImlhdCI6MTY1NTEwNjAzMH0.LHKulYkET0cnB1NopbdufDH_0t4BEJ1OSmiyV_d1zFJDjoZcLk-Dp5SwJAPUcNWtS5GB6eduxe2mND2YALgvl9BGSV_Hn0JT29BA32RN3326hL_N-lTKwTzPuxfADxxjNtz_7GcB_xOVEV0_-yxucN-bdVQAKrRqb_-xx_SoPC6-qB0f6bYHyIuumk4fpxUek2Dm3IxG86n3dv7GUQGz6w6EpbpTDztzqdthb7ZFKycNuOKiVcolkwB6DlOrxJBriCUxc8EoqkBH8b0Coi4n_y2zdfb8iZPontuwfBi2bVp1lAX-sNk7u8sf02jRhcLpIjuCxVSV0sv0Oclfndm6Uw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"order_id\":39153025,\r\n  \"order_part_id\": 38647622,\r\n  \"comment\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://okala.hastisafir.ir/api/v1/VendorAgent/RejectReturnOrder",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hastisafir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"RejectReturnOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://okala.hasti-safir.ir/api/v1/VendorAgent/AddOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "okala.hastisafir.ir"
+					},
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,fa-IR;q=0.8,fa;q=0.7"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json-patch+json"
+					},
+					{
+						"key": "origin",
+						"value": "https://okala.hastisafir.ir"
+					},
+					{
+						"key": "referer",
+						"value": "https://okala.hastisafir.ir/index.html"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IllJVTg3Q0JYWkpOWkVBVUxTUTdPR0lXT0tFRjlENkFaTklUOFRFNDAiLCJ0eXAiOiJhdCtqd3QifQ.eyJzdWIiOiI5ZDA1OTdjNS04N2ZlLTQ1NzctYTdlMy1jZDY5ZGVhNGZkZGQiLCJuYW1lIjoiMDkxMjExMTIyMjIiLCJvaV9wcnN0IjoiYW5ndWxhciIsImNsaWVudF9pZCI6ImFuZ3VsYXIiLCJvaV90a25faWQiOiJmZGVlNzdhNC1mYTAwLTRkZGYtYmE3ZS1jMDExZDk4N2JhOWIiLCJhdWQiOiJoYXN0aV9zZXJ2ZXIiLCJzY29wZSI6Imhhc3RpX2FwaSBvcGVuaWQgcHJvZmlsZSIsImV4cCI6MTY3NTE3MDY3MywiaXNzIjoiaHR0cDovL2hhc3RpLW9wZW5pZGRpY3QucHJvZHVjdGlvbi5zdmMuY2x1c3Rlci5sb2NhbC8iLCJpYXQiOjE2NzUxNjcwNzN9.Fh5kIg89CKE_6_i7A2y1Q2bSpYDSlxrfJ4pINBlGNWOd8Undo_Ig409MPqwHYnspmeUdDwbBXklc7Pr5BM1smfglYpz2JUpmuAb7-NVFjB-hLm_jfROA9lTHF6zSLF7_U6cSyTSnByiLEAPkR1Y1FBllx8RiEonEKXGKpaWjTSMX-08zzJY-6zUmDshsfOskkTEnaALCXQVpBPw3f0Az6dNbMVGpNghgZUXLKKcf08vYICZmrvj-rHJZkfrv8BfA8gCLIMDXcjWmkSmha5m6aTqhaJd5vPDPZnllsz8wrjBjsMTwtZrmZ2Ptq0MKfWRCRqrY1oamURHXkg38uxtN4g"
+					},
+					{
+						"key": "Cookie",
+						"value": "INGRESSCOOKIE=390b03be70bae1206cc0972d95259d48|b46bf9498c5659ef46c49e95fa07d0b3; TS012bebc8=014ff7b7d4e8f25c676a6aa4b154544de6e866dd75ba6644f113b6f9a56a9d41de501eb7690d93e551f37f593c0c7eff3505bc7905acb015d12e4bab4c7ea7ceaea862faee; TS012bebc8028=017da4f2085be2079dca33b189fd84d8a78aaffad6cf07ec74edaceb9fa773fdb3309e3efa7221220cecfb7a2ec16af375bee14c2d"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"orderId\": \"47472325\",\n        \"customOrderNumber\": \"23013145792415\",\n        \"orderPartId\": 46852994,\n        \"remain\": 0.0,\n        \"invoiceValue\": 1108000.0000,\n        \"storeId\": 5601,\n        \"customerFirstName\": null,\n        \"customerLastName\": null,\n        \"customerAddress\": \"آیت الله مشکینی، شهید رجایی، ۴۸ شرقی\",\n        \"customerMobile\": \"09351210161\",\n        \"customerLat\": 35.500147,\n        \"customerLng\": 51.214317,\n        \"deliveryCode\": \"2155\",\n        \"createdOn\": \"1/31/2023 3:08:34 PM\",\n        \"createdOnTitle\": \"سه‌شنبه 1401/11/11 ساعت 1/31/2023 3:08:34 PM\",\n        \"shippingStartTime\": \"1401/11/11 15:08\",\n        \"shippingFinishTime\": \"1401/11/11 16:08\",\n        \"shippingTypeCode\": 1,\n        \"statusCode\": 42,\n        \"storeName\": \"فروشگاه واوان افق کوروش اسلامشهر\",\n        \"plaque\": \"۲۷\",\n        \"unit\": \"۲\",\n        \"customerOrderName\": null,\n        \"returnCode\": \"\",\n        \"return\": false,\n        \"replace\": false,\n        \"reverse\": false\n    },\n    \"orderItem\": [\n        {\n            \"orderItemId\": 237240521,\n            \"orderItemTitle\": \"چیپس خلالی سلفونی 180 گرمی مزمز\",\n            \"orderItemCode\": 688,\n            \"count\": 1,\n            \"orderItemPrice\": 317000.0000\n        },\n        {\n            \"orderItemId\": 237240523,\n           \"orderItemTitle\": \"دوغ بدون گاز 1500 میلی لیتری خوشگوار\",\n            \"orderItemCode\": 2094,\n            \"count\": 1,\n            \"orderItemPrice\": 219000.0000\n        },\n        {\n            \"orderItemId\": 237240524,\n            \"orderItemTitle\": \"کره 50 گرمی پگاه\",\n            \"orderItemCode\": 2939,\n            \"count\": 1,\n            \"orderItemPrice\": 91000.0000\n        },\n        {\n            \"orderItemId\": 237240522,\n            \"orderItemTitle\": \"دوغ بدون گاز هشت گیاه 1.5 لیتری عالیس\",\n            \"orderItemCode\": 17954,\n            \"count\": 1,\n            \"orderItemPrice\": 267000.0000\n        },\n        {\n            \"orderItemId\": 237240525,\n            \"orderItemTitle\": \"آبمیوه گازدار لیمونعنا(موهیتو) یک لیتر ماجو\",\n            \"orderItemCode\": 184499,\n            \"count\": 1,\n            \"orderItemPrice\": 139000.0000\n        },\n        {\n            \"orderItemId\": 237240527,\n            \"orderItemTitle\": \"آبمیوه گازدار بلوبری یک لیتر ماجو\",\n            \"orderItemCode\": 184503,\n            \"count\": 1,\n            \"orderItemPrice\": 139000.0000\n        },\n        {\n            \"orderItemId\": 237240526,\n            \"orderItemTitle\": \"ماءالعشیر آناناس یک لیتر ماجو\",\n            \"orderItemCode\": 184508,\n            \"count\": 1,\n            \"orderItemPrice\": 131000.0000\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "https://okala.hasti-safir.ir/api/v1/VendorAgent/AddOrder",
+					"protocol": "https",
+					"host": [
+						"okala",
+						"hasti-safir",
+						"ir"
+					],
+					"path": [
+						"api",
+						"v1",
+						"VendorAgent",
+						"AddOrder"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
